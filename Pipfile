@@ -5,8 +5,8 @@ name = "pypi"
 
 [packages]
 flask = "*"
-gunicorn = "*"
 firebase-admin = "*"
+gunicorn = "*"
 
 [dev-packages]
 
