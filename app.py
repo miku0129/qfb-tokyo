@@ -1,4 +1,4 @@
-from flask import Flask 
+from flask import Flask, render_template
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
@@ -24,10 +24,11 @@ def main():
         u'born': 1815
     }) 
 
-    result = 'done'
-    return result
+    name = "Hoge"
+    #return name
+    return render_template('hello.html', title='flask test', name=name) 
 
 
 ## おまじない
 if __name__ == "__main__":
-    main.run(debug=True)
+    app.run(debug=True)
