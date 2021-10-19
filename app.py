@@ -24,7 +24,7 @@ def main():
         u'born': 1815
     }) 
 
-    name = "Hoge"
+    name = "Hoge miku"
     #return name
     return render_template('hello.html', title='flask test', name=name) 
 
