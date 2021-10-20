@@ -2,6 +2,8 @@
   
   Python 3.10.10
   pipenv 
+  https://pipenv-ja.readthedocs.io/ja/translate-ja/basics.html
+  
   Flask 
   firebase Firestore database, Authentication
   
