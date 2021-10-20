@@ -28,7 +28,7 @@
   heroku login
   
   デプロイ
-  git heroku push main 
+  git push heroku main
   
   デプロイしたページを開く
   heroku open
