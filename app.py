@@ -5,19 +5,20 @@ from firebase_admin import firestore
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 import pyrebase
 
-from dotenv import load_dotenv
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
 
 import json, os
+import config
 
 # email = 'test001@example.com'
 # password = 'hogehogehoge'
 
 app = Flask(__name__)
 
-app.secret_key = os.getenv('sec_key')
+print("app secret key", config.SECRET_KEY)
+app.secret_key = config.SECRET_KEY
 
-print("app secret key", app.secret_key)
 
 
 # ===================== Firebase =====================================
