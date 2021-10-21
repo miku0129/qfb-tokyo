@@ -6,9 +6,16 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for, s
 import pyrebase
 
 import json, os
+import ini
+
+
+# email = 'test001@example.com'
+# password = 'hogehogehoge'
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.urandom(24)
+# app.config['SECRET_KEY'] = os.urandom(24)
+app.secret_key = ini.ini_key
+
 
 # ===================== Firebase =====================================
 # このPythonファイルと同じ階層に認証ファイルを配置して、ファイル名を格納
@@ -26,12 +33,12 @@ auth = firebase.auth()
 # ====================================================================
 
 
-doc_ref = db.collection(u'users').document(u'alovelace')
-doc_ref.set({
-    u'first': u'Mikke',
-    u'last': u'Lovelace',
-    u'born': 1815
-}) 
+# doc_ref = db.collection(u'users').document(u'alovelace')
+# doc_ref.set({
+#     u'first': u'Mikke',
+#     u'last': u'Lovelace',
+#     u'born': 1815
+# }) 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

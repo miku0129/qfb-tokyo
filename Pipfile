@@ -9,6 +9,7 @@ firebase-admin = "*"
 gunicorn = "*"
 requests = "*"
 pyrebase4 = "*"
+configparser = "*"
 
 [dev-packages]
 
