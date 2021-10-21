@@ -6,17 +6,12 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for, s
 import pyrebase
 
 import json, os
-# import ini
 # from dotenv import load_dotenv, dotenv_values
-
 
 # email = 'test001@example.com'
 # password = 'hogehogehoge'
 
 app = Flask(__name__)
-# app.config['SECRET_KEY'] = os.urandom(24)
-# config = dotenv_values(".env")
-# print(".env", config); 
 
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 

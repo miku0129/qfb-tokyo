@@ -1,5 +1,4 @@
 env*.pyc
-config.ini
 .env
 
 # Logs
