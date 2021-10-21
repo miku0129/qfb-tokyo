@@ -5,8 +5,9 @@ from firebase_admin import firestore
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 import pyrebase
 
-import json, os
-import ini
+# import json, os
+# import ini
+# from dotenv import load_dotenv, dotenv_values
 
 
 # email = 'test001@example.com'
@@ -14,7 +15,10 @@ import ini
 
 app = Flask(__name__)
 # app.config['SECRET_KEY'] = os.urandom(24)
-app.config['SECRET_KEY'] = ini.ini_key
+# config = dotenv_values(".env")
+# print(".env", config); 
+
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 # ===================== Firebase =====================================
