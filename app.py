@@ -14,7 +14,7 @@ import ini
 
 app = Flask(__name__)
 # app.config['SECRET_KEY'] = os.urandom(24)
-app.secret_key = ini.ini_key
+app.config['SECRET_KEY'] = ini.ini_key
 
 
 # ===================== Firebase =====================================
