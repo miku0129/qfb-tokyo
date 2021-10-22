@@ -16,9 +16,10 @@ app = Flask(__name__)
 app.secret_key = config.SECRET_KEY
 
 # ===================== Firebase =====================================
-JSON_PATH = os.getenv('qfb-tokyo-firebase-adminsdk-3sbnu-efcb66a282.json')
+# JSON_PATH = os.getenv('qfb-tokyo-firebase-adminsdk-3sbnu-efcb66a282.json')
+
 # Firebase初期化
-cred = credentials.Certificate(JSON_PATH)
+cred = credentials.Certificate(config.JSON_PATH)
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
