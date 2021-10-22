@@ -16,56 +16,59 @@ app = Flask(__name__)
 app.secret_key = config.SECRET_KEY
 
 # ===================== Firebase =====================================
-# JSON_PATH = os.getenv('qfb-tokyo-firebase-adminsdk-3sbnu-efcb66a282.json')
 
 # Firebase初期化
-cred = credentials.Certificate(config.JSON_PATH)
+cred = credentials.Certificate({
+    "projectId": config.FIREBASE_PROJECT_ID,
+    "private_key": config.FIREBASE_PRIVATE_KEY,
+    "client_email": config.FIREBASE_CLIENT_EMAIL
+})
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-with open("firebaseConfig.json") as f:
-    firebaseConfig = json.loads(f.read())
-firebase = pyrebase.initialize_app(firebaseConfig)
-auth = firebase.auth()
+# with open("firebaseConfig.json") as f:
+#     firebaseConfig = json.loads(f.read())
+# firebase = pyrebase.initialize_app(firebaseConfig)
+# auth = firebase.auth()
 # ====================================================================
 
 
-# doc_ref = db.collection(u'users').document(u'alovelace')
-# doc_ref.set({
-#     u'first': u'Mikke',
-#     u'last': u'Lovelace',
-#     u'born': 1815
-# }) 
+doc_ref = db.collection(u'users').document(u'alovelace')
+doc_ref.set({
+    u'first': u'MMMMY',
+    u'last': u'Lovelace',
+    u'born': 1815
+}) 
 
-@app.route('/lp', methods=['GET'])
-def lp():
-    return render_template("lp.html")
+# @app.route('/lp', methods=['GET'])
+# def lp():
+#     return render_template("lp.html")
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'GET':
-        return render_template("login.html",msg="")
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     if request.method == 'GET':
+#         return render_template("login.html",msg="")
 
-    email = request.form['email']
-    password = request.form['password']
-    try:
-        user = auth.sign_in_with_email_and_password(email, password)
-        session['usr'] = email
-        return redirect(url_for('index'))
-    except:
-        return render_template("login.html", msg="メールアドレスまたはパスワードが間違っています。")
+#     email = request.form['email']
+#     password = request.form['password']
+#     try:
+#         user = auth.sign_in_with_email_and_password(email, password)
+#         session['usr'] = email
+#         return redirect(url_for('index'))
+#     except:
+#         return render_template("login.html", msg="メールアドレスまたはパスワードが間違っています。")
 
-@app.route("/", methods=['GET'])
-def index():
-    usr = session.get('usr')
-    if usr == None:
-        return redirect(url_for('lp'))
-    return render_template("index.html", usr=usr)
+# @app.route("/", methods=['GET'])
+# def index():
+#     usr = session.get('usr')
+#     if usr == None:
+#         return redirect(url_for('lp'))
+#     return render_template("index.html", usr=usr)
 
-@app.route('/logout')
-def logout():
-    del session['usr']
-    return redirect(url_for('login'))
+# @app.route('/logout')
+# def logout():
+#     del session['usr']
+#     return redirect(url_for('login'))
 
 
 if __name__ == "__main__":
