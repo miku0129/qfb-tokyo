@@ -5,9 +5,6 @@ from firebase_admin import firestore
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 import pyrebase
 
-# from dotenv import load_dotenv
-# load_dotenv()
-
 import json, os
 import config
 
@@ -16,13 +13,9 @@ import config
 
 app = Flask(__name__)
 
-print("app secret key", config.SECRET_KEY)
 app.secret_key = config.SECRET_KEY
 
-
-
 # ===================== Firebase =====================================
-# このPythonファイルと同じ階層に認証ファイルを配置して、ファイル名を格納
 JSON_PATH = 'qfb-tokyo-firebase-adminsdk-3sbnu-efcb66a282.json'
 
 # Firebase初期化
@@ -44,6 +37,10 @@ auth = firebase.auth()
 #     u'born': 1815
 # }) 
 
+@app.route('/lp', methods=['GET'])
+def lp():
+    return render_template("lp.html")
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
@@ -62,7 +59,7 @@ def login():
 def index():
     usr = session.get('usr')
     if usr == None:
-        return redirect(url_for('login'))
+        return redirect(url_for('lp'))
     return render_template("index.html", usr=usr)
 
 @app.route('/logout')

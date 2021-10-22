@@ -1,21 +1,23 @@
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Flask app with Firebase authentification</title>
-</head>
-<body>
+{% extends "layout.html" %}
 
-<div>
-    <h1>メールアドレスとパスワードを入力してください</h1>
-    <form action='login' method='POST'>
-        <input type='text' name='email' id='email' placeholder='email'/>
-        <br/>
-        <input type='password' name='password' id='password' placeholder='password'/>
-        <br/>
-        <input type='submit' name='submit'/>
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+    <form action="/login" method="post">
+        <div class="form-group">
+            <input autocomplete="on" autofocus class="form-control" name="email" placeholder="email" type="text">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password" type="password">
+        </div>
+        <button class="btn btn-primary" type="submit">Log In</button>
     </form>
-    <h2 style="color:orangered;">{{msg}}</h2>
-</div>
-
-</body>
-</html>
+    <div>
+        <a href="./password">Change Password</a>
+    </div>
+    <dif>
+      <h2 style="color:orangered;">{{msg}}</h2>
+    </dif>
+{% endblock %}
