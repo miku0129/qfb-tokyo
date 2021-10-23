@@ -19,10 +19,13 @@ app.secret_key = config.SECRET_KEY
 
 # Firebase初期化
 cred = credentials.Certificate({
-    "projectId": config.FIREBASE_PROJECT_ID,
-    "private_key": config.FIREBASE_PRIVATE_KEY,
-    "client_email": config.FIREBASE_CLIENT_EMAIL
+    "type":config.FIREBASE_TYPE,
+    "project_id": config.FIREBASE_PROJECT_ID,
+    "private_key": config.FIREBASE_PRIVATE_KEY.replace("\\n", "\n"),
+    "client_email": config.FIREBASE_CLIENT_EMAIL,
+    "token_uri": config.FIREBASE_TOKEN_URI
 })
+print("cred", cred)
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
@@ -39,6 +42,11 @@ doc_ref.set({
     u'last': u'Lovelace',
     u'born': 1815
 }) 
+
+@app.route('/', methods=['GET'])
+def lp():
+    return render_template("lp.html")
+
 
 # @app.route('/lp', methods=['GET'])
 # def lp():
