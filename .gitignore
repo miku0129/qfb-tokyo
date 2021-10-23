@@ -1,6 +1,6 @@
 env*.pyc
 .env
-firebaseConfig.json
+bk_firebaseConfig
 bk_qfb-tokyo-firebase-adminsdk-3sbnu-efcb66a282
 
 # Logs
