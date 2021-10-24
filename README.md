@@ -1,29 +1,38 @@
-  ### Book Club サークルのための読みたい本リスト機能を持つアプリ
+  ### アプリについて
+  読みたい本のリストを管理できるアプリである。<br>
+  CS50xの最終課題として作成した。
+  
+  ### Tech 
   
   Python 3.10.10
+  
   pipenv 
   https://pipenv-ja.readthedocs.io/ja/translate-ja/basics.html
   
   Flask 
-  firebase Firestore database, Authentication
   
-  #### 開発
+  firebase for Firestore database, Authentication
+  
+  ### 開発
   ```
-  仮想環境を起動
+  
+  #### 1. アプリ起動
+  
+  Python仮想環境を起動
   pipenv shell
   
-  仮想環境を起動停止
-  pipenv exit 
+  仮想環境内にてFlaskサーバー起動
+  flask run 
   
+  #### 2. アプリ開発
+  
+  1) 開発一般
   仮想環境内にてライブラリのインストール
   pipenv install [ライブラリ名]
   
-  仮想環境内にてサーバー起動
-  flask run 
+  バージョン管理は git コマンドで行う
   
-  サーバーの起動停止
-  ctrl + C 
-  
+  2) デプロイ
   ヘロクにログインする
   heroku login
   
@@ -32,5 +41,22 @@
   
   デプロイしたページを開く
   heroku open
+  
+  #### 3. アプリ停止
+  
+  Flaskサーバーの起動停止
+  ctrl + C 
+  
+  Python仮想環境を起動停止
+  pipenv exit 
+  
+  
   ```
+  
+  
+  
+ 
+  
+  
+
   
