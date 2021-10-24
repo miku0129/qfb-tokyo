@@ -3,34 +3,32 @@ from firebase_admin import credentials
 from firebase_admin import firestore, auth
 
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
-import pyrebase
 import configparser
 import requests
 
 import json, os
-import cred
+import env
 
 # email = 'test001@example.com'
 # password = 'hogehogehoge'
 
 app = Flask(__name__)
 
-app.secret_key = cred.SECRET_KEY
+app.secret_key = env.SECRET_KEY
 
 # ===================== Firebase =====================================
-
 # Firebase初期化
+
 creds = credentials.Certificate({
-    "type":cred.FIREBASE_TYPE,
-    "project_id": cred.FIREBASE_PROJECT_ID,
-    "private_key": cred.FIREBASE_PRIVATE_KEY.replace("\\n", "\n"),
-    "client_email": cred.FIREBASE_CLIENT_EMAIL,
-    "token_uri": cred.FIREBASE_TOKEN_URI
+    "type":env.FIREBASE_TYPE,
+    "project_id": env.FIREBASE_PROJECT_ID,
+    "private_key": env.FIREBASE_PRIVATE_KEY.replace("\\n", "\n"),
+    "client_email": env.FIREBASE_CLIENT_EMAIL,
+    "token_uri": env.FIREBASE_TOKEN_URI
 })
+
 firebase_admin.initialize_app(creds)
 db = firestore.client()
-
-
 # ====================================================================
 
 # Ensure responses aren't cached
@@ -41,13 +39,12 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-doc_ref = db.collection(u'users').document(u'alovelace')
-doc_ref.set({
-    u'first': u'MMMEY',
-    u'last': u'Lovelace',
-    u'born': 1815
-}) 
-
+# doc_ref = db.collection(u'users').document(u'alovelace')
+# doc_ref.set({
+#     u'first': u'MMMEY',
+#     u'last': u'Lovelace',
+#     u'born': 1815
+# }) 
 
 @app.route('/lp', methods=['GET'])
 def lp():
@@ -58,19 +55,16 @@ def login():
     if request.method == 'GET':
         return render_template("login.html",msg="")
 
-    api_key = cred.FIREBASE_TOKEN_API_KEY
+    api_key = env.FIREBASE_TOKEN_API_KEY
 
     config = configparser.ConfigParser()
     config.read("./config.ini")
 
-
     email = request.form['email']
     password = request.form['password']
 
-
     try:
         user = sign_in_with_email_and_password(api_key, email, password, config)
-        # user = auth.get_user_by_email(email)
 
         session['usr'] = email
 
@@ -86,7 +80,6 @@ def sign_in_with_email_and_password(api_key, email, password, config):
     uri = f"https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key={api_key}"
     headers = {"Content-type": "application/json"}
     data = json.dumps({"email": email, "password": password, "returnSecureToken": True})
-    # config["proxy"]["proxy"] = True
     proxies, verify = get_proxy(config)
 
     print("proxies", proxies)
@@ -102,10 +95,6 @@ def get_proxy(config):
 
     verify = True
     proxies = None
-
-    print("veryfy", verify)
-    print("proxies", proxies)
-    print("proxy", config["proxy"].getboolean("proxy"))
 
     if config["proxy"].getboolean("proxy"):
         proxies = {
