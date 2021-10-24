@@ -1,3 +1,7 @@
 {
-  "python.pythonPath": "python3"
+  "python.pythonPath": "python3",
+  "python.analysis.extraPaths": [
+    "../../../../.virtualenvs/Ver1.0-exH98DoR/Lib/site-packages",
+]
+
 }

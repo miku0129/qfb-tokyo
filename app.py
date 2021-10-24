@@ -1,4 +1,5 @@
-import json, os, sys
+import json
+import os
 import env
 
 import requests
@@ -9,7 +10,6 @@ from firebase_admin import firestore, auth
 
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 import configparser
-
 
 
 # email = 'test001@example.com'
@@ -23,7 +23,7 @@ app.secret_key = env.SECRET_KEY
 # Firebase初期化
 
 creds = credentials.Certificate({
-    "type":env.FIREBASE_TYPE,
+    "type": env.FIREBASE_TYPE,
     "project_id": env.FIREBASE_PROJECT_ID,
     "private_key": env.FIREBASE_PRIVATE_KEY.replace("\\n", "\n"),
     "client_email": env.FIREBASE_CLIENT_EMAIL,
@@ -35,6 +35,8 @@ db = firestore.client()
 # ====================================================================
 
 # Ensure responses aren't cached
+
+
 @app.after_request
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
@@ -47,16 +49,18 @@ def after_request(response):
 #     u'first': u'MMMEY',
 #     u'last': u'Lovelace',
 #     u'born': 1815
-# }) 
+# })
+
 
 @app.route('/lp', methods=['GET'])
 def lp():
     return render_template("lp.html")
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return render_template("login.html",msg="")
+        return render_template("login.html", msg="")
 
     api_key = env.FIREBASE_TOKEN_API_KEY
 
@@ -67,7 +71,8 @@ def login():
     password = request.form['password']
 
     try:
-        user = sign_in_with_email_and_password(api_key, email, password, config)
+        user = sign_in_with_email_and_password(
+            api_key, email, password, config)
 
         session['usr'] = email
 
@@ -78,11 +83,13 @@ def login():
     except:
         return render_template("login.html", msg="メールアドレスまたはパスワードが間違っています。")
 
+
 def sign_in_with_email_and_password(api_key, email, password, config):
 
     uri = f"https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key={api_key}"
     headers = {"Content-type": "application/json"}
-    data = json.dumps({"email": email, "password": password, "returnSecureToken": True})
+    data = json.dumps({"email": email, "password": password,
+                       "returnSecureToken": True})
     proxies, verify = get_proxy(config)
 
     print("proxies", proxies)
@@ -93,6 +100,7 @@ def sign_in_with_email_and_password(api_key, email, password, config):
                            verify=verify)
     print("result")
     return result.json()
+
 
 def get_proxy(config):
 
@@ -108,8 +116,10 @@ def get_proxy(config):
 
     return proxies, verify
 
+
 def print_pretty(obj):
-    print(json.dumps(obj, ensure_ascii=False, indent=4, sort_keys=True, separators=(',', ': ')))
+    print(json.dumps(obj, ensure_ascii=False, indent=4,
+                     sort_keys=True, separators=(',', ': ')))
 
 
 @app.route("/", methods=['GET'])
@@ -118,6 +128,7 @@ def index():
     if usr == None:
         return redirect(url_for('lp'))
     return render_template("index.html", usr=usr)
+
 
 @app.route('/logout')
 def logout():
