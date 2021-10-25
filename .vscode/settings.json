@@ -1,5 +1,5 @@
 {
   "python.analysis.extraPaths": [
-    "../../../../.virtualenvs/Ver1.0-exH98DoR/Lib/site-packages",
+    "../.venv/Lib/site-packages/",
   ],
 }
