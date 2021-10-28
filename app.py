@@ -9,6 +9,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore, auth
 
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
+from flask_session import Session
 import configparser
 
 
@@ -35,8 +36,6 @@ db = firestore.client()
 # ====================================================================
 
 # Ensure responses aren't cached
-
-
 @app.after_request
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
@@ -44,17 +43,15 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-# doc_ref = db.collection(u'users').document(u'alovelace')
-# doc_ref.set({
-#     u'first': u'MMMEY',
-#     u'last': u'Lovelace',
-#     u'born': 1815
-# })
+# Configure session to use filesystem (instead of signed cookies)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 
-@app.route('/lp', methods=['GET'])
-def lp():
-    return render_template("lp.html")
+@app.route('/qfb_tokyo', methods=['GET'])
+def qfb_tokyo():
+    return render_template("qfb_tokyo.html")
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -85,7 +82,6 @@ def login():
 
 
 def sign_in_with_email_and_password(api_key, email, password, config):
-
     uri = f"https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key={api_key}"
     headers = {"Content-type": "application/json"}
     data = json.dumps({"email": email, "password": password,
@@ -126,14 +122,14 @@ def print_pretty(obj):
 def index():
     usr = session.get('usr')
     if usr == None:
-        return redirect(url_for('lp'))
+        return redirect(url_for('qfb_tokyo'))
     return render_template("index.html", usr=usr)
 
 
 @app.route('/logout')
 def logout():
     del session['usr']
-    return redirect(url_for('lp'))
+    return redirect(url_for('qfb_tokyo'))
 
 
 if __name__ == "__main__":
