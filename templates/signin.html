@@ -5,5 +5,22 @@
 {% endblock %}
 
 {% block main %}
-    <p>singin</p>
+    <form action="/signin" method="post">
+        <div class="form-group">
+            <input autocomplete="on" autofocus class="form-control" name="username" placeholder="User name" type="text">
+        </div>
+        <div class="form-group">
+            <input autocomplete="on" autofocus class="form-control" name="email" placeholder="Email" type="text">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password" type="password">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Confirm password" type="password">
+        </div>
+        <button class="btn btn-primary" type="submit">Singin</button>
+    </form>
+    <dif>
+      <h2 style="color:orangered;">{{msg}}</h2>
+    </dif>
 {% endblock %}

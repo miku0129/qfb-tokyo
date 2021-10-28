@@ -1,17 +1,12 @@
-import json
-import os
-import env
-
+import json, os, env
 import requests
-
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore, auth
-
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 from flask_session import Session
 import configparser
-
+from helpers import sign_in_with_email_and_password, print_pretty
 
 # email = 'test001@example.com'
 # password = 'hogehogehoge'
@@ -22,7 +17,6 @@ app.secret_key = env.SECRET_KEY
 
 # ===================== Firebase =====================================
 # Firebase初期化
-
 creds = credentials.Certificate({
     "type": env.FIREBASE_TYPE,
     "project_id": env.FIREBASE_PROJECT_ID,
@@ -48,6 +42,11 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+api_key = env.FIREBASE_TOKEN_API_KEY
+
+config = configparser.ConfigParser()
+config.read("./config.ini")
+
 
 @app.route('/qfb_tokyo', methods=['GET'])
 def qfb_tokyo():
@@ -58,11 +57,6 @@ def qfb_tokyo():
 def login():
     if request.method == 'GET':
         return render_template("login.html", msg="")
-
-    api_key = env.FIREBASE_TOKEN_API_KEY
-
-    config = configparser.ConfigParser()
-    config.read("./config.ini")
 
     email = request.form['email']
     password = request.form['password']
@@ -81,41 +75,25 @@ def login():
         return render_template("login.html", msg="メールアドレスまたはパスワードが間違っています。")
 
 
-def sign_in_with_email_and_password(api_key, email, password, config):
-    uri = f"https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key={api_key}"
-    headers = {"Content-type": "application/json"}
-    data = json.dumps({"email": email, "password": password,
-                       "returnSecureToken": True})
-    proxies, verify = get_proxy(config)
+@app.route('/signin', methods=['GET', 'POST'])
+def signin():
+    if request.method == 'GET':
+        return render_template("signin.html", msg="")
+    
+    # username = request.form['username']
+    # email = request.form['email']
+    # password = request.form['password']
 
-    print("proxies", proxies)
-    result = requests.post(url=uri,
-                           headers=headers,
-                           data=data,
-                           proxies=proxies,
-                           verify=verify)
-    print("result")
-    return result.json()
+    # print(username)
+    
+    # user = auth.create_user(
+    # email= email,
+    # email_verified=False,
+    # password= password,
+    # display_name= username,
+    # disabled=False)
 
-
-def get_proxy(config):
-
-    verify = True
-    proxies = None
-
-    if config["proxy"].getboolean("proxy"):
-        proxies = {
-            "http": config["proxy"]["http"],
-            "https": config["proxy"]["https"]
-        }
-        verify = False
-
-    return proxies, verify
-
-
-def print_pretty(obj):
-    print(json.dumps(obj, ensure_ascii=False, indent=4,
-                     sort_keys=True, separators=(',', ': ')))
+    return redirect(url_for('index'))
 
 
 @app.route("/", methods=['GET'])
