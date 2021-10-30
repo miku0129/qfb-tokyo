@@ -86,25 +86,42 @@ def login():
 def signin():
     session.clear()
 
-    if request.method == 'GET':
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+
+        # Ensure username was submitted
+        if not request.form.get("username"):
+            return render_template("signin.html", msg="Must provide username")
+        
+        # Ensure email was submitted
+        if not request.form.get("email"):
+            return render_template("signin.html", msg="Must provide email")
+
+        # Ensure password was submitted
+        elif not request.form.get("password"):
+            return render_template("signin.html", msg="Must provide password")
+
+        # Ensure confirmation password was submitted
+        elif not request.form.get("confirmation_password"):
+            return render_template("signin.html", msg="Must provide confirmation")
+        
+        elif not request.form.get("password") == request.form.get("confirmation"):
+             return render_template("signin.html", msg="Must password and confirmation match")
+
+        user = auth.create_user(
+        email= email,
+        email_verified=False,
+        password= password,
+        display_name= username,
+        disabled=False)
+
+        print(f'{username}\'s account is successfly created')
+        session['usr'] = user.email
+        return redirect(url_for('index'), code=200)
+    else:
         return render_template("signin.html", msg="")
-    
-    username = request.form['username']
-    email = request.form['email']
-    password = request.form['password']
-
-    user = auth.create_user(
-    email= email,
-    email_verified=False,
-    password= password,
-    display_name= username,
-    disabled=False)
-
-    # invalid case 
-
-    print(f'{username}\'s account is successfly created')
-    session['usr'] = user.email
-    return redirect(url_for('index'), code=200)
 
 
 @app.route("/", methods=['GET'])
