@@ -65,17 +65,14 @@ def login():
         # Ensure password was submitted
         elif not request.form.get("password"):
             return render_template("login.html", msg="Password is needed")
-
+            
         try:
             user = sign_in_with_email_and_password(
                 api_key, email, password, config)
-
             session['usr'] = email
-
             print('---- sign_in_with_email_and_password -----')
             print_pretty(user)
             return redirect(url_for('index'))
-
         except:
             return render_template("login.html", msg="メールアドレスまたはパスワードが間違っています。")
     else:
@@ -131,6 +128,40 @@ def index():
         return redirect(url_for('qfb_tokyo'), code=200)
     user = auth.get_user_by_email(usr)
     return render_template("index.html", user=user.display_name)
+
+@app.route("/reset", methods=['GET', 'POST'])
+def reset():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        
+        # Ensure email was submitted
+        if not request.form.get("email"):
+            return render_template("reset.html", msg="Must provide email")
+
+        # Ensure password was submitted
+        elif not request.form.get("password"):
+            return render_template("reset.html", msg="Must provide password")
+        
+        # Ensure confirmation password was submitted
+        elif not request.form.get("confirmation_password"):
+            return render_template("reset.html", msg="Must provide confirmation")
+        
+        elif not request.form.get("password") == request.form.get("confirmation_password"):
+             return render_template("reset.html", msg="Must password and confirmation match")
+
+        uid = auth.get_user_by_email(email).uid
+        user = auth.update_user(
+            uid,
+            email=email,
+            password=password
+            )
+
+        print(f'{user.display_name}\'s account is successfly updated')
+        session['usr'] = email
+        return redirect(url_for('index'))
+    else:
+        return render_template("reset.html")
 
 
 @app.route('/logout')
