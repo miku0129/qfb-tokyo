@@ -107,7 +107,8 @@ def index():
     usr = session.get('usr')
     if usr == None:
         return redirect(url_for('qfb_tokyo'), code=200)
-    return render_template("index.html", user="some")
+    user = auth.get_user_by_email(usr)
+    return render_template("index.html", user=user.display_name)
 
 
 @app.route('/logout')
