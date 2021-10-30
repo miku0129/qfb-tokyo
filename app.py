@@ -47,6 +47,8 @@ api_key = env.FIREBASE_TOKEN_API_KEY
 config = configparser.ConfigParser()
 config.read("./config.ini")
 
+#initialize user
+user = None
 
 @app.route('/qfb_tokyo', methods=['GET'])
 def qfb_tokyo():
@@ -80,28 +82,33 @@ def signin():
     if request.method == 'GET':
         return render_template("signin.html", msg="")
     
-    # username = request.form['username']
-    # email = request.form['email']
-    # password = request.form['password']
+    username = request.form['username']
+    email = request.form['email']
+    password = request.form['password']
 
-    # print(username)
-    
-    # user = auth.create_user(
-    # email= email,
-    # email_verified=False,
-    # password= password,
-    # display_name= username,
-    # disabled=False)
+    user = auth.create_user(
+    email= email,
+    email_verified=False,
+    password= password,
+    display_name= username,
+    disabled=False)
 
-    return redirect(url_for('index'))
+    # invalid case 
+
+    print(f'{username}\'s account is successfly created')
+    user = auth.get_user(user.uid)
+    session['usr'] = user
+    return redirect(url_for('index'), code=200)
 
 
 @app.route("/", methods=['GET'])
 def index():
     usr = session.get('usr')
     if usr == None:
-        return redirect(url_for('qfb_tokyo'))
-    return render_template("index.html", usr=usr)
+        return redirect(url_for('qfb_tokyo'), code=200)
+    user = auth.get_user(usr.uid)
+    print(user.display_name); 
+    return render_template("index.html", user=user)
 
 
 @app.route('/logout')
