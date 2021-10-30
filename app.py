@@ -1,4 +1,4 @@
-import json, os, env
+import json, os, env, datetime
 import requests
 import firebase_admin
 from firebase_admin import credentials
@@ -169,9 +169,29 @@ def reset():
         return render_template("reset.html")
 
 @app.route('/edit', methods=['GET', 'POST'])
-def edit():
+async def edit():
     if request.method == 'POST':
+        book_title = request.form['book_title']
+        book_author = request.form['book_author']
         
+        # Ensure book_title was submitted
+        if not request.form.get("book_title"):
+            return render_template("edit.html", msg="Must provide book title")
+
+        # Ensure book_author was submitted
+        elif not request.form.get("book_author"):
+            return render_template("edit.html", msg="Must provide author")
+        
+        user = auth.get_user_by_email(session['usr'])
+        
+        timestamp = datetime.now()
+
+        data = {"book_title": book_title, "book_author": book_author, "delete_flag": 0, "posted_at": timestamp, "reccomended_by": user, "votes": 0}
+
+        # Add a new doc in collection 'books' with ID 'book title'
+        book_ref = db.collection("books").document(book_title)
+        await book_ref.set(data, merge=True)
+
         return render_template('edit.html')
     else:
         return render_template('edit.html')
