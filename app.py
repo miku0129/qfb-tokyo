@@ -8,9 +8,6 @@ from flask_session import Session
 import configparser
 from helpers import sign_in_with_email_and_password, print_pretty
 
-# email = 'test001@example.com'
-# password = 'hogehogehoge'
-
 app = Flask(__name__)
 
 app.secret_key = env.SECRET_KEY
@@ -57,24 +54,32 @@ def qfb_tokyo():
 def login():
     session.clear()
 
-    if request.method == 'GET':
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        # Ensure username was submitted
+        if not request.form.get("email"):
+            return render_template("login.html", msg="Email is needed")
+
+        # Ensure password was submitted
+        elif not request.form.get("password"):
+            return render_template("login.html", msg="Password is needed")
+
+        try:
+            user = sign_in_with_email_and_password(
+                api_key, email, password, config)
+
+            session['usr'] = email
+
+            print('---- sign_in_with_email_and_password -----')
+            print_pretty(user)
+            return redirect(url_for('index'))
+
+        except:
+            return render_template("login.html", msg="メールアドレスまたはパスワードが間違っています。")
+    else:
         return render_template("login.html", msg="")
-
-    email = request.form['email']
-    password = request.form['password']
-
-    try:
-        user = sign_in_with_email_and_password(
-            api_key, email, password, config)
-
-        session['usr'] = email
-
-        print('---- sign_in_with_email_and_password -----')
-        print_pretty(user)
-        return redirect(url_for('index'))
-
-    except:
-        return render_template("login.html", msg="メールアドレスまたはパスワードが間違っています。")
 
 
 @app.route('/signin', methods=['GET', 'POST'])
