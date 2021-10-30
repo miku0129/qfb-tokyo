@@ -132,7 +132,10 @@ def index():
     if request.method == 'POST':
         return render_template("index.html", user=user.display_name)
     else:
-        return render_template("index.html", user=user.display_name)
+        books = db.collection('books')
+        docs = books.stream()
+
+        return render_template("index.html", user=user.display_name, books=docs)
 
 @app.route("/reset", methods=['GET', 'POST'])
 def reset():
@@ -184,14 +187,19 @@ def edit():
         
         user = auth.get_user_by_email(session['usr'])
         
-        data = {"book_title": book_title, "book_author": book_author, "delete_flag": 0, "posted_at": firestore.SERVER_TIMESTAMP, "reccomended_by": user.uid, "votes": 0}
+        data = {"book_title": book_title, "book_author": book_author, "delete_flag": 0, "posted_at": firestore.SERVER_TIMESTAMP, "recommended_by": user.display_name, "uid": user.uid,"votes": 0}
 
-        doc_ref = db.collection('book').document()
+        doc_ref = db.collection('books').document()
         doc_ref.set(data)
         return render_template('edit.html', msg="The book is successfully listed")
-        
+
     else:
-        return render_template('edit.html')
+        uid= auth.get_user_by_email(session['usr']).uid
+
+        books = db.collection('books')
+        docs = books.stream()
+
+        return render_template('edit.html', uid=uid, books=docs)
 
 @app.route('/logout')
 def logout():

@@ -18,5 +18,16 @@
       <h2 style="color:orangered;">{{msg}}</h2>
     </dif>
     <h3>Your book list</h3>
+
+    {% for book in books %}
+    {% if book.to_dict().uid == uid %}
+    <div>
+        <p>{{ book.to_dict().recommended_by}} recommends</p>
+        <h3>title: {{ book.to_dict().book_title }}</h3>
+        <h4>author: {{ book.to_dict().book_author }}</h4>
+        <p>vote: {{ book.to_dict().votes}}</p>
+    </div>
+    {% endif %}
+    {% endfor %}
     
 {% endblock %}

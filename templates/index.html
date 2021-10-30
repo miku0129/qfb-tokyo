@@ -5,5 +5,13 @@
 {% endblock %}
 
 {% block main %}
-    <p>welcome {{user}}!</p>
+    <p>{{user}} is login</p>
+    {% for book in books %}
+        <div>
+            <p>{{ book.to_dict().recommended_by}} recommends</p>
+            <h3>title: {{ book.to_dict().book_title }}</h3>
+            <h4>author: {{ book.to_dict().book_author }}</h4>
+            <p>vote: {{ book.to_dict().votes}}</p>
+        </div>
+    {% endfor %}
 {% endblock %}
