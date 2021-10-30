@@ -5,5 +5,18 @@
 {% endblock %}
 
 {% block main %}
-    <p>edit</p>
+    <form action="/edit" method="post">
+        <div class="form-group">
+            <input autocomplete="on" autofocus class="form-control" name="book_title" placeholder="book title" type="text">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="book_author" placeholder="author" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit">Add</button>
+    </form>
+    <dif>
+      <h2 style="color:orangered;">{{msg}}</h2>
+    </dif>
+    <h3>Your book list</h3>
+    
 {% endblock %}

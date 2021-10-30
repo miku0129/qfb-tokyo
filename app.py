@@ -65,7 +65,7 @@ def login():
         # Ensure password was submitted
         elif not request.form.get("password"):
             return render_template("login.html", msg="Password is needed")
-            
+
         try:
             user = sign_in_with_email_and_password(
                 api_key, email, password, config)
@@ -121,13 +121,18 @@ def signin():
         return render_template("signin.html", msg="")
 
 
-@app.route("/", methods=['GET'])
+@app.route("/", methods=['GET', 'POST'])
 def index():
     usr = session.get('usr')
     if usr == None:
         return redirect(url_for('qfb_tokyo'), code=200)
+
     user = auth.get_user_by_email(usr)
-    return render_template("index.html", user=user.display_name)
+
+    if request.method == 'POST':
+        return render_template("index.html", user=user.display_name)
+    else:
+        return render_template("index.html", user=user.display_name)
 
 @app.route("/reset", methods=['GET', 'POST'])
 def reset():
@@ -162,6 +167,15 @@ def reset():
         return redirect(url_for('index'))
     else:
         return render_template("reset.html")
+
+@app.route('/edit', methods=['GET', 'POST'])
+def edit():
+    if request.method == 'POST':
+        
+        return render_template('edit.html')
+    else:
+        return render_template('edit.html')
+
 
 
 @app.route('/logout')
