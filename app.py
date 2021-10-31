@@ -137,6 +137,7 @@ def index():
 
         return render_template("index.html", user=user.display_name, books=docs)
 
+
 @app.route("/reset", methods=['GET', 'POST'])
 def reset():
     if request.method == 'POST':
@@ -171,35 +172,71 @@ def reset():
     else:
         return render_template("reset.html")
 
-@app.route('/edit', methods=['GET', 'POST'])
-def edit():
+@app.route('/edit_add', methods=['GET', 'POST'])
+def edit_add():
     if request.method == 'POST':
+        
         book_title = request.form['book_title']
         book_author = request.form['book_author']
         
         # Ensure book_title was submitted
         if not request.form.get("book_title"):
-            return render_template("edit.html", msg="Must provide book title")
+            return render_template("edit_add.html", msg="Must provide book title")
 
         # Ensure book_author was submitted
         elif not request.form.get("book_author"):
-            return render_template("edit.html", msg="Must provide author")
+            return render_template("edit_add.html", msg="Must provide author")
         
         user = auth.get_user_by_email(session['usr'])
         
         data = {"book_title": book_title, "book_author": book_author, "delete_flag": 0, "posted_at": firestore.SERVER_TIMESTAMP, "recommended_by": user.display_name, "uid": user.uid,"votes": 0}
 
-        doc_ref = db.collection('books').document()
-        doc_ref.set(data)
-        return render_template('edit.html', msg="The book is successfully listed")
+        # Ensure the books hasn't been submitted 
+        books = db.collection('books')
+        docs = books.stream()
+        for doc in docs: 
+            if doc.to_dict()['book_title'] == book_title:
+                books = db.collection('books')
+                docs = books.stream()
+                return render_template("edit_add.html", uid=user.uid, books=docs, msg="The book has been listed")
 
-    else:
-        uid= auth.get_user_by_email(session['usr']).uid
+        doc_ref = db.collection('books').document(book_title)
+        doc_ref.set(data)
 
         books = db.collection('books')
         docs = books.stream()
+        return render_template('edit_add.html', uid=user.uid, books=docs, msg="The book is successfully listed")
 
-        return render_template('edit.html', uid=uid, books=docs)
+    else:
+        uid= auth.get_user_by_email(session['usr']).uid
+        books = db.collection('books')
+        docs = books.stream()
+        return render_template('edit_add.html', uid=uid, books=docs)
+
+@app.route('/edit_delete', methods=['GET', 'POST'])
+def edit_delete():
+        if request.method == 'POST':
+            
+            delete_book = request.form['delete_book']
+
+            # Ensure book_title was submitted
+            if not request.form.get("delete_book"):
+                return render_template("edit_delete.html", msg="Must provide book title")
+
+            db.collection('books').document(delete_book).delete()
+            print("deleted", delete_book)
+
+            uid= auth.get_user_by_email(session['usr']).uid
+            books = db.collection('books')
+            docs = books.stream()
+            return render_template('edit_delete.html', uid=uid, books=docs, msg="The book is successfully deleted")
+
+        else:
+            uid= auth.get_user_by_email(session['usr']).uid
+            books = db.collection('books')
+            docs = books.stream()
+            return render_template('edit_delete.html', uid=uid, books=docs)
+
 
 @app.route('/logout')
 def logout():

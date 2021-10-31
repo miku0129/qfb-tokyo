@@ -1,33 +1,30 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    edit 
+    delete
 {% endblock %}
 
 {% block main %}
-    <form action="/edit" method="post">
+    <form action="/edit_delete" method="post">
         <div class="form-group">
-            <input autocomplete="on" autofocus class="form-control" name="book_title" placeholder="book title" type="text">
+            <input autocomplete="on" autofocus class="form-control" name="delete_book" placeholder="book title" type="text">
         </div>
-        <div class="form-group">
-            <input class="form-control" name="book_author" placeholder="author" type="text">
-        </div>
-        <button class="btn btn-primary" type="submit">Add</button>
+        <button class="btn btn-primary" type="submit">Delete</button>
     </form>
     <dif>
       <h2 style="color:orangered;">{{msg}}</h2>
     </dif>
+    <div>
+        <a href="./edit_add">Back</a>
+    </div>
     <h3>Your book list</h3>
-
     {% for book in books %}
     {% if book.to_dict().uid == uid %}
     <div>
-        <p>{{ book.to_dict().recommended_by}} recommends</p>
         <h3>title: {{ book.to_dict().book_title }}</h3>
         <h4>author: {{ book.to_dict().book_author }}</h4>
         <p>vote: {{ book.to_dict().votes}}</p>
     </div>
     {% endif %}
     {% endfor %}
-    
 {% endblock %}
