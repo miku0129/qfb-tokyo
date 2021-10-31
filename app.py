@@ -219,23 +219,34 @@ def edit_delete():
             
             delete_book = request.form['delete_book']
 
+            uid= auth.get_user_by_email(session['usr']).uid
+
             # Ensure book_title was submitted
             if not request.form.get("delete_book"):
                 return render_template("edit_delete.html", msg="Must provide book title")
 
-            db.collection('books').document(delete_book).delete()
-            print("deleted", delete_book)
-
-            uid= auth.get_user_by_email(session['usr']).uid
             books = db.collection('books')
             docs = books.stream()
-            return render_template('edit_delete.html', uid=uid, books=docs, msg="The book is successfully deleted")
-
+            # Ensure the book is existed
+            for doc in docs: 
+                if doc.to_dict()['book_title'] == delete_book:
+                    # Ensure that book was submitted by the user
+                    if not doc.to_dict()['uid'] == uid:
+                        return render_template("edit_delete.html", uid=uid, books=docs, msg="You can't delete this book")
+        
+                    db.collection('books').document(delete_book).delete()
+                    books = db.collection('books')
+                    docs = books.stream()
+                    return render_template('edit_delete.html', uid=uid, books=docs, msg="The book is successfully deleted")
+                else:
+                    continue
+            return render_template('edit_delete.html', uid=uid, books=docs, msg="The title is not found")
         else:
             uid= auth.get_user_by_email(session['usr']).uid
             books = db.collection('books')
             docs = books.stream()
             return render_template('edit_delete.html', uid=uid, books=docs)
+
 
 @app.route('/usage')
 def usage():
