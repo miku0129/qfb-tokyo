@@ -116,7 +116,7 @@ def signin():
 
         print(f'{username}\'s account is successfly created')
         session['usr'] = user.email
-        return redirect(url_for('index'), code=200)
+        return redirect(url_for('usage'), code=200)
     else:
         return render_template("signin.html", msg="")
 
@@ -236,6 +236,10 @@ def edit_delete():
             books = db.collection('books')
             docs = books.stream()
             return render_template('edit_delete.html', uid=uid, books=docs)
+
+@app.route('/usage')
+def usage():
+    return render_template('usage.html')
 
 
 @app.route('/logout')
