@@ -6,13 +6,23 @@
 
 {% block main %}
     <p>{{user}} is login</p>
+    <p>Vote</p>
+    <form action="/" method="post">
+        <div class="form-group">
+            <input autocomplete="on" autofocus class="form-control" name="book_title" placeholder="book title" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit">Vote</button>
+    </form>
+    <dif>
+      <h2 style="color:orangered;">{{msg}}</h2>
+    </dif>
     {% for book in books %}
         <div>
             <p>{{ book.to_dict().recommended_by}} recommends</p>
             <h3>title: {{ book.to_dict().book_title }}</h3>
             <h4>author: {{ book.to_dict().book_author }}</h4>
-            <p>vote: {{ book.to_dict().votes}}</p>
-            <button class="vote_btn btn-primary" type="submit">Vote</button>
+            <h4>summary: {{ book.to_dict().book_summary }}</h4>
+            <p >vote: {{ book.to_dict().votes}}</p>
         </div>
     {% endfor %}
 {% endblock %}

@@ -13,6 +13,9 @@
         <div class="form-group">
             <input class="form-control" name="book_author" placeholder="author" type="text">
         </div>
+        <div class="form-group">
+            <textarea rows="3" cols="50" class="form-control" name="book_summary" placeholder="short summary" type="text"></textarea>
+        </div>
         <button class="btn btn-primary" type="submit">Add</button>
     </form>
     <dif>
@@ -27,7 +30,7 @@
     <div>
         <h3>title: {{ book.to_dict().book_title }}</h3>
         <h4>author: {{ book.to_dict().book_author }}</h4>
-        <p>vote: {{ book.to_dict().votes}}</p>
+        <p>summary: {{ book.to_dict().book_summary }}</p>
     </div>
     {% endif %}
     {% endfor %}

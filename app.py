@@ -99,12 +99,16 @@ def signin():
         # Ensure password was submitted
         elif not request.form.get("password"):
             return render_template("signin.html", msg="Must provide password")
+        
+        # Ensure password is bigger than 7 characters 
+        elif len(password) < 6:
+            return render_template("signin.html", msg="Password must be a string at least 6 characters long")
 
         # Ensure confirmation password was submitted
         elif not request.form.get("confirmation_password"):
-            return render_template("signin.html", msg="Must provide confirmation")
+            return render_template("signin.html", msg="Must provide confirmation password")
         
-        elif not request.form.get("password") == request.form.get("confirmation"):
+        elif not request.form.get("password") == request.form.get("confirmation_password"):
              return render_template("signin.html", msg="Must password and confirmation match")
 
         user = auth.create_user(
@@ -130,11 +134,34 @@ def index():
     user = auth.get_user_by_email(usr)
 
     if request.method == 'POST':
-        return render_template("index.html", user=user.display_name)
+        book_title = request.form['book_title']
+
+        # Ensure book_title was submitted
+        if not request.form.get("book_title"):
+            books = db.collection('books')
+            docs = books.stream()
+            return render_template("index.html", uid=user.uid, books=docs, msg="Must provide a book title")
+
+        # Ensure the book is existed
+        books = db.collection('books')
+        docs = books.stream()
+        for doc in docs: 
+            if doc.to_dict()['book_title'] == book_title:
+                updated_votes = doc.to_dict()['votes'] + 1; 
+                db.collection('books').document(book_title).update({"votes":updated_votes})
+                
+                books = db.collection('books')
+                docs = books.stream()
+                return render_template("index.html", uid=user.uid, books=docs, msg="Successfuly voted")
+            else:
+                continue
+        
+        books = db.collection('books')
+        docs = books.stream()
+        return render_template('index.html', uid=user.uid, books=docs, msg="The title is not found")
     else:
         books = db.collection('books')
         docs = books.stream()
-
         return render_template("index.html", user=user.display_name, books=docs)
 
 
@@ -152,9 +179,13 @@ def reset():
         elif not request.form.get("password"):
             return render_template("reset.html", msg="Must provide password")
         
+        # Ensure password is bigger than 7 characters 
+        elif len(password) < 6:
+            return render_template("signin.html", msg="Password must be a string at least 6 characters long")
+        
         # Ensure confirmation password was submitted
         elif not request.form.get("confirmation_password"):
-            return render_template("reset.html", msg="Must provide confirmation")
+            return render_template("reset.html", msg="Must provide confirmation password")
         
         elif not request.form.get("password") == request.form.get("confirmation_password"):
              return render_template("reset.html", msg="Must password and confirmation match")
@@ -178,18 +209,35 @@ def edit_add():
         
         book_title = request.form['book_title']
         book_author = request.form['book_author']
+        book_summary = request.form['book_summary']
         
         # Ensure book_title was submitted
         if not request.form.get("book_title"):
             return render_template("edit_add.html", msg="Must provide book title")
+        
+        # Ensure book_title is less than 30 characters 
+        elif len(book_title) > 30:
+            return render_template("edit_add.html", msg="Book title must be less than 30 characters")
 
         # Ensure book_author was submitted
         elif not request.form.get("book_author"):
             return render_template("edit_add.html", msg="Must provide author")
         
+        # Ensure book_author is less than 30 characters 
+        elif len(book_author) > 30:
+            return render_template("edit_add.html", msg="Author name must be less than 30 characters")
+
+        # Ensure book_summary was submitted
+        elif not request.form.get("book_summary"):
+            return render_template("edit_add.html", msg="Make short summary")
+        
+        # Ensure book_summary is less than 140 characters 
+        elif len(book_summary) > 140:
+            return render_template("edit_add.html", msg="Summary must be less than 140 characters")
+        
         user = auth.get_user_by_email(session['usr'])
         
-        data = {"book_title": book_title, "book_author": book_author, "delete_flag": 0, "posted_at": firestore.SERVER_TIMESTAMP, "recommended_by": user.display_name, "uid": user.uid,"votes": 0}
+        data = {"book_title": book_title, "book_author": book_author, "delete_flag": 0, "book_summary": book_summary, "posted_at": firestore.SERVER_TIMESTAMP, "recommended_by": user.display_name, "uid": user.uid,"votes": 0}
 
         # Ensure the books hasn't been submitted 
         books = db.collection('books')
