@@ -54,44 +54,6 @@
             <p>QFBTokyo</p>
         </footer>
         
-        <script
-        src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-        crossorigin="anonymous"></script>
-        <script>
 
-            function vote(book_title){
-                console.log("data is: ", book_title)
-                
-                    // $.ajax({
-                    //     url:"/",
-                    //     data:JSON.stringify({val:book_title}),
-                    //     type:"POST",
-                    //     dataType:"json",
-                    //     success     : function(data) {
-                    //     //data = JSON.parse(data);  //error
-                    //     response = data;
-                    //     },
-                    //     error       : function(XMLHttpRequest, textStatus, errorThrown) {
-                    //     console.log("リクエスト時になんらかのエラーが発生しました\n" + url + "\n" + textStatus +":\n" + errorThrown);
-                    // }
-                    //                 })
-                    $.ajax({
-                        url:"/",
-                        data:{val:book_title},
-                        type:"POST",
-                        dataType:"json",
-                        success     : function(data) {
-                        //data = JSON.parse(data);  //error
-                        response = data;
-                        },
-                        error       : function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.log("リクエスト時になんらかのエラーが発生しました\n" + url + "\n" + textStatus +":\n" + errorThrown);
-                    }
-                                    })
-
-
-            }
-        </script>
     </body>
 </html>

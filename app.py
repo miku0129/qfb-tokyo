@@ -1,4 +1,4 @@
-import json, os, env
+import json, os, env, sys
 import requests
 import firebase_admin
 from firebase_admin import credentials
@@ -134,7 +134,17 @@ def index():
     user = auth.get_user_by_email(usr)
 
     if request.method == 'POST':
-        book_title = request.form['book_title']
+        # book_title = request.form['book_title']
+        book_title = request.form['val'] # ajax
+
+        print("here is ludo's ans1", book_title)
+
+
+        # test
+        # data = sys.stdin.read()
+        # book_title = json.loads(data)
+        # book_title = request.args.get('val')
+        # print("here is ludo's ans2", book_title)
 
         # Ensure book_title was submitted
         if not request.form.get("book_title"):
