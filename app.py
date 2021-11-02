@@ -134,23 +134,7 @@ def index():
     user = auth.get_user_by_email(usr)
 
     if request.method == 'POST':
-        # book_title = request.form['book_title']
-        book_title = request.form['val'] # ajax
-
-        print("here is ludo's ans1", book_title)
-
-
-        # test
-        # data = sys.stdin.read()
-        # book_title = json.loads(data)
-        # book_title = request.args.get('val')
-        # print("here is ludo's ans2", book_title)
-
-        # Ensure book_title was submitted
-        if not request.form.get("book_title"):
-            books = db.collection('books')
-            docs = books.stream()
-            return render_template("index.html", uid=user.uid, books=docs, msg="Must provide a book title")
+        book_title = request.form['val'] # ajax send data as a form in default 
 
         # Ensure the book is existed
         books = db.collection('books')
@@ -161,18 +145,14 @@ def index():
                 db.collection('books').document(book_title).update({"votes":updated_votes})
                 
                 books = db.collection('books')
-                docs = books.stream()
-                return render_template("index.html", uid=user.uid, books=docs, msg="Successfuly voted")
+                docs = books.stream()          
+                return redirect(url_for("index", data=[user.display_name, docs]))
             else:
                 continue
-        
-        books = db.collection('books')
-        docs = books.stream()
-        return render_template('index.html', uid=user.uid, books=docs, msg="The title is not found")
     else:
         books = db.collection('books')
         docs = books.stream()
-        return render_template("index.html", user=user.display_name, books=docs)
+        return render_template("index.html", data=[user.display_name, docs])
 
 
 @app.route("/reset", methods=['GET', 'POST'])
