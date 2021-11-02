@@ -4,6 +4,7 @@ bk_firebaseConfig
 bk_qfb-tokyo-firebase-adminsdk-3sbnu-efcb66a282
 .venv
 flask_session
+back_up_files
 
 # Logs
 logs
