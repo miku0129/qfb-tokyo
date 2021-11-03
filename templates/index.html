@@ -7,6 +7,9 @@
 {% block main %}
     <p>{{data[0]}} is login</p>
     <p>Vote</p>
+    <dif>
+        <h2 style="color:orangered;">{{data[2]}}</h2>
+    </dif>  
     {% for book in data[1] %}
         <div>
             <p>{{ book.to_dict().recommended_by}} recommends</p>
@@ -18,3 +21,5 @@
         </div>
     {% endfor %}
 {% endblock %}
+
+

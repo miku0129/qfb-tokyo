@@ -136,23 +136,44 @@ def index():
     if request.method == 'POST':
         book_title = request.form['val'] # ajax send data as a form in default 
 
-        # Ensure the book is existed
+        # Ensure only vote once 
+        book_shelf_ref = db.collection(u'book_shelf').document(u'{}'.format( user.uid) )
+        collection = book_shelf_ref.get()
+        collection_dict = collection.to_dict()
+        if collection_dict:
+            for key in collection_dict:
+                if key == book_title and collection_dict[key] == 1 :
+                    msg="Already voted"
+                    books = db.collection('books')
+                    docs = books.stream()       
+                    return redirect(url_for("index", data=[user.display_name, docs, msg]))
+                else:
+                    continue
+        #vote
         books = db.collection('books')
         docs = books.stream()
         for doc in docs: 
             if doc.to_dict()['book_title'] == book_title:
                 updated_votes = doc.to_dict()['votes'] + 1; 
                 db.collection('books').document(book_title).update({"votes":updated_votes})
-                
+
+                # keep track the history of vote 
+                book_shelf_ref = db.collection(u'book_shelf').document(u'{}'.format(user.uid))
+                book_shelf_ref.set({
+                    u'{}'.format(book_title) : 1
+                        }, merge=True)
+
+                msg = "Successfuly voted"
                 books = db.collection('books')
                 docs = books.stream()          
-                return redirect(url_for("index", data=[user.display_name, docs]))
+                return redirect(url_for("index", data=[user.display_name, docs, msg]))
             else:
                 continue
     else:
+        msg = " "
         books = db.collection('books')
         docs = books.stream()
-        return render_template("index.html", data=[user.display_name, docs])
+        return render_template("index.html", data=[user.display_name, docs, msg])
 
 
 @app.route("/reset", methods=['GET', 'POST'])
@@ -192,6 +213,7 @@ def reset():
         return redirect(url_for('index'))
     else:
         return render_template("reset.html")
+
 
 @app.route('/edit_add', methods=['GET', 'POST'])
 def edit_add():
