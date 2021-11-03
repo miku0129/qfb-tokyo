@@ -143,13 +143,10 @@ def index():
         if collection_dict:
             for key in collection_dict:
                 if key == book_title and collection_dict[key] == 1 :
-                    msg="Already voted"
-                    books = db.collection('books')
-                    docs = books.stream()       
-                    return redirect(url_for("index", data=[user.display_name, docs, msg]))
+                    return redirect(url_for("index"))
                 else:
                     continue
-        #vote
+
         books = db.collection('books')
         docs = books.stream()
         for doc in docs: 
@@ -162,18 +159,13 @@ def index():
                 book_shelf_ref.set({
                     u'{}'.format(book_title) : 1
                         }, merge=True)
-
-                msg = "Successfuly voted"
-                books = db.collection('books')
-                docs = books.stream()          
-                return redirect(url_for("index", data=[user.display_name, docs, msg]))
+                return redirect(url_for("index"))
             else:
                 continue
     else:
-        msg = " "
         books = db.collection('books')
         docs = books.stream()
-        return render_template("index.html", data=[user.display_name, docs, msg])
+        return render_template("index.html", data=[user.display_name, docs])
 
 
 @app.route("/reset", methods=['GET', 'POST'])
