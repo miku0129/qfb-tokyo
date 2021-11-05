@@ -136,14 +136,29 @@ def index():
     if request.method == 'POST':
         book_title = request.form['val'] # ajax send data as a form in default 
 
-        # Ensure only vote once 
+        # book_shelf["book_title"] == 0 : hasn't voted or unvoted 
+        # book_shelf["book_title"] == 1 : voted
         book_shelf_ref = db.collection(u'book_shelf').document(u'{}'.format( user.uid) )
         collection = book_shelf_ref.get()
         collection_dict = collection.to_dict()
         if collection_dict:
             for key in collection_dict:
                 if key == book_title and collection_dict[key] == 1 :
-                    return redirect(url_for("index"))
+                            books = db.collection('books')
+                            docs = books.stream()
+                            for doc in docs: 
+                                if doc.to_dict()['book_title'] == book_title:
+                                    updated_votes = doc.to_dict()['votes'] - 1; 
+                                    db.collection('books').document(book_title).update({"votes":updated_votes})
+
+                                    # keep track the history of vote 
+                                    book_shelf_ref = db.collection(u'book_shelf').document(u'{}'.format(user.uid))
+                                    book_shelf_ref.set({
+                                        u'{}'.format(book_title) : 0
+                                            }, merge=True)
+                                    return redirect(url_for("index"))
+                                else:
+                                    continue
                 else:
                     continue
 
