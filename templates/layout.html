@@ -8,35 +8,35 @@
         <link href="/static/styles.css" rel="stylesheet">
         <title> {% block title %}{% endblock %} </title>
     </head>
-    
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container-fluid">
-                <a class="navbar-brand">QFBTokyo</a>
-              <div class="navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav me-auto">
-                  <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
-                    {% if session.usr %}
-                        <li class="nav-item"><a class="nav-link" href="/usage">Usage</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/edit_add">Edit</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
-                    {% else %}
-                        <li class="nav-item"><a class="nav-link" href="/signin">Sign in</a></li>
-                         <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
-                {% endif %}
-                  </li>
-                </ul>
-              </div>
+          <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div id="accordion_nav">
+                <div>
+                    <a class="navbar-brand" href="/">QFBTokyo</a>
+                </div>
+                <div id="isShow">
+                    <label for="menu_bar"><span class="navbar-toggler-icon"></span></label>
+                    <input type="checkbox" id="menu_bar" />
+                        <ul id="links" class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/">Home</a></li>
+                            {% if session.usr %}
+                                <li class="nav-item"><a class="nav-link" href="/usage">Usage</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/edit_add">Edit</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                            {% else %}
+                                <li class="nav-item"><a class="nav-link" href="/signin">Sign in</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+                        {% endif %}
+                            </li>
+                        </ul>
+                </div>
             </div>
           </nav>
-
         <main>
             {% block main %}{% endblock %}
         </main>
-
         <footer>
         </footer>
-        
         <script
         src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="

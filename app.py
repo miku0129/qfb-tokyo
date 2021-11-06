@@ -75,7 +75,7 @@ def login():
             print_pretty(user)
             return redirect(url_for('index'))
         except:
-            return render_template("login.html", msg="Sorry for this failure. Please report to the organizer if this error continue")
+            return render_template("login.html", msg="Sorry for this failure. Please message to the organizer if this error continue")
     else:
         return render_template("login.html", msg="")
 
@@ -91,15 +91,15 @@ def signin():
 
         # Ensure username was submitted
         if not request.form.get("username"):
-            return render_template("signin.html", msg="Must provide username")
+            return render_template("signin.html", msg="Provide username")
         
         # Ensure email was submitted
         if not request.form.get("email"):
-            return render_template("signin.html", msg="Must provide email")
+            return render_template("signin.html", msg="Provide email")
 
         # Ensure password was submitted
         elif not request.form.get("password"):
-            return render_template("signin.html", msg="Must provide password")
+            return render_template("signin.html", msg="Provide password")
         
         # Ensure password is bigger than 7 characters 
         elif len(password) < 6:
@@ -107,7 +107,7 @@ def signin():
 
         # Ensure confirmation password was submitted
         elif not request.form.get("confirmation_password"):
-            return render_template("signin.html", msg="Must provide confirmation password")
+            return render_template("signin.html", msg="Provide confirmation password")
         
         elif not request.form.get("password") == request.form.get("confirmation_password"):
              return render_template("signin.html", msg="Must password and confirmation match")

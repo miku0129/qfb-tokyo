@@ -3,21 +3,62 @@ body{
     background-color:antiquewhite;
 }
 
+.navbar {
+    position: fixed;
+    width: 100%;
+}
+
+#accordion_nav {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+}
+input {
+    display: none;
+}
+#accordion_nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+#accordion_nav li {
+    height: 0;
+    overflow: hidden;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+#menu_bar:checked ~ #links li{
+    height: 54px;
+    opacity: 1;
+}
+
 .text-primaly {
     margin-top: 20px;
 }
 
-@media screen and ( max-width: 800px ){
-    body {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: repeat(7, 1fr);
-        grid-column-gap: 0px;
-        grid-row-gap: 0px;
-        }
-    header { grid-area: 1 / 1 / 2 / 2; }
-    main { grid-area: 2 / 1 / 7 / 2; }
-    footer { grid-area: 7 / 1 / 8 / 2;}
+.form_container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.form-control {
+    width:300px; 
+}
+
+.message_container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+@media screen and ( max-width: 750px ){
     #main_vidual_container {
         display: flex;
         justify-content: center;
@@ -29,19 +70,14 @@ body{
         height:auto;
         margin-top: 80px;
         }
+    #isShow {
+        /* menubarの表示切り替え */
+        visibility: visible;
+        }
+        
 }
 
-@media screen and ( min-width: 800px ) {
-    body {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: repeat(5, 1fr);
-        grid-column-gap: 0px;
-        grid-row-gap: 0px;
-        }
-    header { grid-area: 1 / 1 / 2 / 3; }
-    main { grid-area: 2 / 1 / 5 / 3; }
-    footer { grid-area: 5 / 1 / 6 / 3;}
+@media screen and ( min-width: 750px ) {
     #main_vidual_container {
         display: flex;
         justify-content: center;
@@ -52,5 +88,8 @@ body{
         width:600px;
         height:auto;
         margin-top: 100px;
+    }
+    #isShow {
+        visibility: collapse;
     }
 }
