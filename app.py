@@ -12,6 +12,7 @@ app = Flask(__name__)
 
 app.secret_key = env.SECRET_KEY
 
+
 # ===================== Firebase =====================================
 # Firebase初期化
 creds = credentials.Certificate({

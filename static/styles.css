@@ -1,26 +1,46 @@
+/* common parts */
+
+.flex_vertical_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.flex_holizontal_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+/* parts */
 
 body{
     background-color:antiquewhite;
 }
 
-.navbar {
-    position: fixed;
-    width: 100%;
-}
-
-#accordion_nav {
-    display: flex;
-    flex-direction: column;
-    align-items: baseline;
-}
 input {
     display: none;
 }
+
+.navbar {
+    position: fixed;
+    width: 100%;
+    top:0; 
+}
+
+.flex_holizontal_container .nav-item {
+    margin-right: 15px;
+}
+
+
 #accordion_nav ul {
     margin: 0;
     padding: 0;
     list-style: none;
 }
+
 #accordion_nav li {
     height: 0;
     overflow: hidden;
@@ -30,6 +50,7 @@ input {
     -o-transition: all 0.5s;
     transition: all 0.5s;
 }
+
 #menu_bar:checked ~ #links li{
     height: 54px;
     opacity: 1;
@@ -39,57 +60,45 @@ input {
     margin-top: 20px;
 }
 
-.form_container {
-    margin-top: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+.form_style {
+    margin-top: 150px;
 }
+
 .form-control {
     width:300px; 
 }
 
-.message_container {
+.message_style {
     margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
 }
 
 @media screen and ( max-width: 750px ){
-    #main_vidual_container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-    #main_vidual {
+    #main_vidual_style {
         width:300px;
         height:auto;
-        margin-top: 80px;
+        margin-top: 160px;
         }
-    #isShow {
+
+    #menubar_visibility {
         /* menubarの表示切り替え */
         visibility: visible;
         }
-        
+    #menu_visibility {
+        /* menuの表示切り替え */
+        visibility: collapse;
+        }
 }
 
 @media screen and ( min-width: 750px ) {
-    #main_vidual_container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-    #main_vidual {
+    #main_vidual_style {
         width:600px;
         height:auto;
-        margin-top: 100px;
+        margin-top: 160px;
     }
-    #isShow {
+    #menubar_visibility {
         visibility: collapse;
+    }
+    #menu_visibility {
+        visibility: visible;
     }
 }

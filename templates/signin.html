@@ -6,7 +6,7 @@
 
 {% block main %}
     <form action="/signin" method="post">
-        <div class="form_container">
+        <div class="form_style flex_vertical_container">
             <div class="form-group">
                 <input autofocus name="username" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter user name">
             </div>
@@ -22,7 +22,7 @@
             <button class="btn btn-primary" type="submit">Singin</button>
         </div>
     </form>
-    <div class="message_container">
+    <div class="message_style flex_vertical_container">
         <div>
           <h2 style="color:orangered;">{{msg}}</h2>
         </div>

@@ -8,12 +8,14 @@
         <link href="/static/styles.css" rel="stylesheet">
         <title> {% block title %}{% endblock %} </title>
     </head>
+    <body>
+        <!-- if screen width is less than 750px -->
           <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div id="accordion_nav">
                 <div>
                     <a class="navbar-brand" href="/">QFBTokyo</a>
                 </div>
-                <div id="isShow">
+                <div id="menubar_visibility">
                     <label for="menu_bar"><span class="navbar-toggler-icon"></span></label>
                     <input type="checkbox" id="menu_bar" />
                         <ul id="links" class="navbar-nav me-auto">
@@ -31,7 +33,25 @@
                         </ul>
                 </div>
             </div>
+
+            <!-- if screen width is greater than 750px -->
+            <div id="menu_visibility" >
+                <ul class="navbar-nav me-auto flex_holizontal_container">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Home</a></li>
+                    {% if session.usr %}
+                        <li class="nav-item"><a class="nav-link" href="/usage">Usage</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/edit_add">Edit</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="/signin">Sign in</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+                {% endif %}
+                    </li>
+                </ul>
+            </div>
           </nav>
+
         <main>
             {% block main %}{% endblock %}
         </main>
