@@ -6,7 +6,7 @@ from firebase_admin import firestore, auth
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 from flask_session import Session
 import configparser
-from helpers import sign_in_with_email_and_password, print_pretty
+from helpers import sign_in_with_email_and_password, print_pretty, update_status_of_books_and_book_shelf
 
 app = Flask(__name__)
 
@@ -24,6 +24,7 @@ creds = credentials.Certificate({
 
 firebase_admin.initialize_app(creds)
 db = firestore.client()
+
 # ====================================================================
 
 # Ensure responses aren't cached
@@ -136,47 +137,24 @@ def index():
     if request.method == 'POST':
         book_title = request.form['val'] # ajax send data as a form in default 
 
-        # book_shelf["book_title"] == 0 : hasn't voted or unvoted 
-        # book_shelf["book_title"] == 1 : voted
         book_shelf_ref = db.collection(u'book_shelf').document(u'{}'.format( user.uid) )
-        collection = book_shelf_ref.get()
-        collection_dict = collection.to_dict()
-        if collection_dict:
-            for key in collection_dict:
-                if key == book_title and collection_dict[key] == 1 :
-                            books = db.collection('books')
-                            docs = books.stream()
-                            for doc in docs: 
-                                if doc.to_dict()['book_title'] == book_title:
-                                    updated_votes = doc.to_dict()['votes'] - 1; 
-                                    db.collection('books').document(book_title).update({"votes":updated_votes})
-
-                                    # keep track the history of vote 
-                                    book_shelf_ref = db.collection(u'book_shelf').document(u'{}'.format(user.uid))
-                                    book_shelf_ref.set({
-                                        u'{}'.format(book_title) : 0
-                                            }, merge=True)
-                                    return redirect(url_for("index"))
-                                else:
-                                    continue
+        collection_of_bookshelf = book_shelf_ref.get()
+        collection_bookshelf_dict = collection_of_bookshelf.to_dict()
+        if collection_bookshelf_dict:
+            for book in collection_bookshelf_dict:
+                # collection_dict[book] == 1 : has voted 
+                # collection_dict[book] == 0 : hasn't voted or unvoted
+                if book == book_title:
+                    books = db.collection('books')
+                    docs = books.stream()
+                    update_status_of_books_and_book_shelf(db, docs, book_shelf_ref, book_title, collection_bookshelf_dict[book])
+                    return redirect(url_for("index"))
                 else:
                     continue
-
         books = db.collection('books')
         docs = books.stream()
-        for doc in docs: 
-            if doc.to_dict()['book_title'] == book_title:
-                updated_votes = doc.to_dict()['votes'] + 1; 
-                db.collection('books').document(book_title).update({"votes":updated_votes})
-
-                # keep track the history of vote 
-                book_shelf_ref = db.collection(u'book_shelf').document(u'{}'.format(user.uid))
-                book_shelf_ref.set({
-                    u'{}'.format(book_title) : 1
-                        }, merge=True)
-                return redirect(url_for("index"))
-            else:
-                continue
+        update_status_of_books_and_book_shelf(db, docs, book_shelf_ref, book_title, 0)
+        return redirect(url_for("index"))
     else:
         books = db.collection('books')
         docs = books.stream()

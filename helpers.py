@@ -1,5 +1,6 @@
 import json
 import requests
+from flask import redirect, url_for
 
 def sign_in_with_email_and_password(api_key, email, password, config):
     uri = f"https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key={api_key}"
@@ -17,6 +18,7 @@ def sign_in_with_email_and_password(api_key, email, password, config):
     print("result")
     return result.json()
 
+
 def get_proxy(config):
     verify = True
     proxies = None
@@ -28,7 +30,27 @@ def get_proxy(config):
         verify = False
     return proxies, verify
 
+
 def print_pretty(obj):
     print(json.dumps(obj, ensure_ascii=False, indent=4,
                      sort_keys=True, separators=(',', ': ')))
 
+
+def update_status_of_books_and_book_shelf(db, docs_of_books, ref, title, hasVote):
+    for doc_of_books in docs_of_books:
+        if doc_of_books.to_dict()['book_title'] == title:
+            if hasVote == 1:
+                update_books_status = doc_of_books.to_dict()['votes'] - 1; 
+                hasVote = 0
+            else:
+                update_books_status = doc_of_books.to_dict()['votes'] + 1; 
+                hasVote = 1
+
+            # update the status of books
+            db.collection('books').document(title).update({"votes":update_books_status})
+
+            # update the status of book_shelf
+            ref.set({ u'{}'.format(title) : hasVote}, merge=True)
+            break
+        else:
+            continue
