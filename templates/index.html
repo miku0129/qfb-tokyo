@@ -7,15 +7,21 @@
 {% block main %}
     <p>{{data[0]}} is login</p>
     <p>Vote</p>
-    {% for book in data[1] %}
-        <div>
-            <p>{{ book.to_dict().recommended_by}} recommends</p>
-            <h3>title: {{ book.to_dict().book_title }}</h3>
-            <h4>author: {{ book.to_dict().book_author }}</h4>
-            <h4>summary: {{ book.to_dict().book_summary }}</h4>
-            <p>vote: {{ book.to_dict().votes}}</p>
-            <button onclick="vote('{{book.to_dict().book_title}}')">Vote</button>
-        </div>
+    {% for book in data[1] %}        
+        <div class="card bg-light mb-3" style="max-width: 20rem;">
+            <div class="card-header">{{ book.to_dict().recommended_by}}'s fave</div>
+            <div class="card-body">
+              <h4 class="card-title">{{ book.to_dict().book_title }}</h4>
+              <p class="card-text">{{ book.to_dict().book_author }}</p>
+              <p class="card-text">{{ book.to_dict().book_summary }}</p>
+              <div class="button_group">
+                  <div class="budge">
+                      <p class="text-secondary">{{ book.to_dict().votes}} voted</p>
+                  </div>
+                  <button type="button" class="btn btn-secondary" onclick="vote('{{book.to_dict().book_title}}')">Vote</button>
+              </div>
+            </div>
+          </div>
     {% endfor %}
 {% endblock %}
 

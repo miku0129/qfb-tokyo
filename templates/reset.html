@@ -6,18 +6,22 @@
 
 {% block main %}
     <form action="/reset" method="post">
-        <div class="form-group">
-            <input autocomplete="on" autofocus class="form-control" name="email" placeholder="email" type="text">
+        <div class="form_style flex_vertical_container">
+            <div class="form-group">
+                <input autocomplete="off" autofocus class="form-control" name="email" placeholder="email" type="text">
+            </div>
+            <div class="form-group">
+                <input class="form-control" name="password" autocomplete="off" placeholder="Password" type="password" minlength="6">
+            </div>
+            <div class="form-group">
+                <input class="form-control" name="confirmation_password" autocomplete="off" placeholder="Confirm password" type="password" minlength="6">
+            </div>
+            <button class="btn btn-primary" type="submit">Reset</button>
         </div>
-        <div class="form-group">
-            <input class="form-control" name="password" placeholder="Password" type="password" minlength="6">
-        </div>
-        <div class="form-group">
-            <input class="form-control" name="confirmation_password" placeholder="Confirm password" type="password" minlength="6">
-        </div>
-        <button class="btn btn-primary" type="submit">Reset</button>
     </form>
-    <div>
-      <h2 style="color:orangered;">{{msg}}</h2>
-    </dif>
+    <div class="message_style flex_vertical_container">
+        <div>
+        <h2 style="color:orangered;">{{msg}}</h2>
+        </dif>
+    </div>
 {% endblock %}

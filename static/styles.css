@@ -1,5 +1,4 @@
 /* common parts */
-
 .flex_vertical_container {
     display: flex;
     justify-content: center;
@@ -14,8 +13,18 @@
     flex-direction: row;
 }
 
-/* parts */
+.button_group {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    flex-direction: row;
+}
 
+.budge {
+    margin-right: 5px;
+}
+
+/* parts */
 body{
     background-color:antiquewhite;
 }
@@ -33,7 +42,6 @@ input {
 .flex_holizontal_container .nav-item {
     margin-right: 15px;
 }
-
 
 #accordion_nav ul {
     margin: 0;
