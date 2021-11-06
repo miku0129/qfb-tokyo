@@ -1,3 +1,12 @@
+
+body{
+    background-color:antiquewhite;
+}
+
+.text-primaly {
+    margin-top: 20px;
+}
+
 @media screen and ( max-width: 800px ){
     body {
         display: grid;
@@ -5,14 +14,10 @@
         grid-template-rows: repeat(7, 1fr);
         grid-column-gap: 0px;
         grid-row-gap: 0px;
-        background-color:antiquewhite;
         }
     header { grid-area: 1 / 1 / 2 / 2; }
     main { grid-area: 2 / 1 / 7 / 2; }
     footer { grid-area: 7 / 1 / 8 / 2;}
-    #copyRight {
-        font-size: small;
-    }
     #main_vidual_container {
         display: flex;
         justify-content: center;
@@ -37,9 +42,6 @@
     header { grid-area: 1 / 1 / 2 / 3; }
     main { grid-area: 2 / 1 / 5 / 3; }
     footer { grid-area: 5 / 1 / 6 / 3;}
-    #copyRight {
-        font-size: medium;
-    }
     #main_vidual_container {
         display: flex;
         justify-content: center;
