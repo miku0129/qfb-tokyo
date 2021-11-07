@@ -91,6 +91,14 @@ input {
     z-index: 10;
 }
 
+.card-header {
+    width:100%;
+}
+
+.card-body {
+    margin-right: auto;
+}
+
 .text-primaly {
     margin-top: 20px;
 }

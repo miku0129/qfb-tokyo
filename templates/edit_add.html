@@ -1,12 +1,13 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    add 
+    add book
 {% endblock %}
 
 {% block main %}
 <p>Add a book</p>
     <form action="/edit_add" method="post">
+        <div class="container_style_2 flex_vertical_container">
         <div class="form-group">
             <input autocomplete="on" autofocus class="form-control" name="book_title" placeholder="book title" type="text">
         </div>
@@ -17,21 +18,33 @@
             <textarea rows="3" cols="50" class="form-control" name="book_summary" placeholder="short summary"></textarea>
         </div>
         <button class="btn btn-primary" type="submit">Add</button>
+        </div>
     </form>
-    <dif>
-      <h2 style="color:orangered;">{{msg}}</h2>
+    <div class="message_style flex_vertical_container">
+        <div>
+        <h2 style="color:orangered;">{{msg}}</h2>
+        </div>
+        <div>
+            <a href="./edit_delete">Delete a book?</a>
+        </div>
     </div>
-    <div>
-        <a href="./edit_delete">Delete a book?</a>
-    </div>
-    <h3>Your book list</h3>
-    {% for book in books %}
-    {% if book.to_dict().uid == uid %}
-    <div>
-        <h3>title: {{ book.to_dict().book_title }}</h3>
-        <h4>author: {{ book.to_dict().book_author }}</h4>
-        <p>summary: {{ book.to_dict().book_summary }}</p>
-    </div>
-    {% endif %}
-    {% endfor %}
+
+    <div class="flex_vertical_container">
+        <h3 class="space_top_20px">Your book list</h3>
+
+            {% for book in books %}
+            {% if book.to_dict().uid == uid %}
+
+            <div class="card bg-light mb-3 flex_vertical_container" style="max-width: 20rem;" id="card_style">
+                <div class="card-header">posted at: {{book.to_dict().posted_at.year}}/{{book.to_dict().posted_at.month}}/{{book.to_dict().posted_at.day}}</div>
+                <div class="card-body">
+                    <h4 class="card-title">{{ book.to_dict().book_title }}</h4>
+                    <p class="card-text">{{ book.to_dict().book_author }}</p>
+                    <p>{{ book.to_dict().book_summary }}</p>
+                </div>
+            </div>
+
+          {% endif %}
+          {% endfor %}
+        </div>
 {% endblock %}
