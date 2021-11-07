@@ -1,19 +1,29 @@
-  ### アプリについて
+  # Project - Book list
+  
+  #### Video Demo: https://youtu.be/LKHt2ZldNg0
+  
+  [![alt設定](http://img.youtube.com/vi/LKHt2ZldNg0/0.jpg)](https://www.youtube.com/watch?v=LKHt2ZldNg0)
+  
+  ### About
+ 
+  I created a full-stack app to manage the book lists for the book club I belong to.
+  This is the final project deliverable for CS50x.
   所属するブッククラブで本のリストを管理するためにフルスタックのアプリを作成しました。
   CS50xの最終課題成果物です。
-  製作期間 2021/10/17 ~ 2021/11/7 約4週間
+  
+  From 2021/10/17 to 2021/11/7, Four weeks
   
   ### Tech 
   
-  Python 3.10.10
+  Python 3.10.10, pipenv, Flask , firebase for Firestore database and Authentication. 
   
-  pipenv 
+  ### Structure 
   
-  Flask 
+  M: Data is stored in Fire store - Firebase. 
+  C: Python and Flask manage between the database and the view.
+  V: jinjya provide templates for the view. 
   
-  firebase for Firestore database, Authentication
-  
-  ### 開発
+  ### Development
   ```
   
   #### 1. アプリ起動
@@ -50,8 +60,14 @@
   Python仮想環境を起動停止
   pipenv exit 
   
-  
   ```
+  
+  ### Futre features
+  
+  * Users can leave comments for each book
+  * Users can create own icon with uploading picture
+  * Uploading book image
+  
   
   
   
