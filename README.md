@@ -62,6 +62,11 @@
   
   ```
   
+  ### Challenges 
+  
+  For my project, clicking a button to vote for a book is important feacutre for a better user experience. I spent a time to research implementing creck event in Python, then decided to use jQuery, ajax. <br>
+  私のプロジェクトでは、本に投票するためにボタンをクリックすることが、より良いユーザー体験のために重要な役割を果たしています。私はPythonでクリックイベントを実装するための研究に時間を費やしましたが、その後、jQueryとajaxを使用することに決めました。
+  
   ### Futre features
   
   * Users can leave comments for each book
