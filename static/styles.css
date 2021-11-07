@@ -13,16 +13,36 @@
     flex-direction: row;
 }
 
+.container_style_1 {
+    margin-top:80px
+}
+
+.container_style_2 {
+    margin-top:200px
+}
+
+.message_style {
+    margin-top: 50px;
+}
+
 .button_group {
     display: flex;
     justify-content: flex-end;
     align-items: baseline;
     flex-direction: row;
+    position:relative;
+    bottom:5px;
+    left:-20px
 }
 
-.budge {
+.space_right_5px {
     margin-right: 5px;
 }
+
+.space_top_20px {
+    margin-top: 20px;
+}
+
 
 /* parts */
 body{
@@ -37,6 +57,8 @@ input {
     position: fixed;
     width: 100%;
     top:0; 
+    /* navbarとcardの重なりを指定 */
+    z-index: 20;
 }
 
 .flex_holizontal_container .nav-item {
@@ -64,20 +86,17 @@ input {
     opacity: 1;
 }
 
+.card {
+    /* navbarとcardの重なりを指定 */
+    z-index: 10;
+}
+
 .text-primaly {
     margin-top: 20px;
 }
 
-.form_style {
-    margin-top: 150px;
-}
-
 .form-control {
     width:300px; 
-}
-
-.message_style {
-    margin-top: 10px;
 }
 
 @media screen and ( max-width: 750px ){
@@ -95,6 +114,10 @@ input {
         /* menuの表示切り替え */
         visibility: collapse;
         }
+    #card_style {
+        width: 280px;
+        height: 240px;
+    }
 }
 
 @media screen and ( min-width: 750px ) {
@@ -108,5 +131,9 @@ input {
     }
     #menu_visibility {
         visibility: visible;
+    }
+    #card_style {
+        width: 350px;
+        height: 230px;
     }
 }
