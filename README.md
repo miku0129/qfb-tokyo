@@ -1,4 +1,4 @@
-  # Project - Book list
+  # Project - Book list 📚
   
   #### Video Demo: https://youtu.be/LKHt2ZldNg0
   
@@ -7,7 +7,7 @@
   ### About
  
   I created a full-stack app to manage the book lists for the book club I belong to.
-  This is the final project deliverable for CS50x.
+  This is the final project deliverable for CS50x.<br>
   所属するブッククラブで本のリストを管理するためにフルスタックのアプリを作成しました。
   CS50xの最終課題成果物です。
   
@@ -19,9 +19,9 @@
   
   ### Structure 
   
-  M: Data is stored in Fire store - Firebase. 
-  C: Python and Flask manage between the database and the view.
-  V: jinjya provide templates for the view. 
+  M: Data is stored in Fire store - Firebase<br> 
+  C: Python and Flask manage data between the database and the view<br>
+  V: jinjya provide templates for the view<br>
   
   ### Development
   ```
