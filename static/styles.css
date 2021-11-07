@@ -22,7 +22,7 @@
 }
 
 .container_style_3 {
-    margin-top:120px
+    margin-top:150px
 }
 
 .message_style {
@@ -111,6 +111,12 @@ input {
     width:300px; 
 }
 
+#usage_container_style {
+    margin-left: 20px;
+    
+}
+
+
 @media screen and ( max-width: 750px ){
     #main_vidual_style {
         width:300px;
@@ -148,4 +154,5 @@ input {
         width: 350px;
         height: 230px;
     }
+
 }
