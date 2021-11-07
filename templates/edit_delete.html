@@ -1,30 +1,40 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    delete
+    delete book
 {% endblock %}
 
 {% block main %}
 <p>Delete a book</p>
     <form action="/edit_delete" method="post">
+        <div class="container_style_3 flex_vertical_container">
         <div class="form-group">
             <input autocomplete="on" autofocus class="form-control" name="delete_book" placeholder="book title" type="text">
         </div>
         <button class="btn btn-primary" type="submit">Delete</button>
+        </div>
     </form>
-    <div>
-      <h2 style="color:orangered;">{{msg}}</h2>
-    </dif>
-    <div>
-        <a href="./edit_add">Back</a>
+    <div class="message_style flex_vertical_container">
+        <div>
+        <h2 style="color:orangered;">{{msg}}</h2>
+        </dif>
+        <div>
+            <a href="./edit_add">Back</a>
+        </div>
     </div>
-    <h3>Your book list</h3>
-    {% for book in books %}
-    {% if book.to_dict().uid == uid %}
-    <div>
-        <h3>title: {{ book.to_dict().book_title }}</h3>
-        <h4>author: {{ book.to_dict().book_author }}</h4>
+    <div class="flex_vertical_container">
+        <h3 class="space_top_20px">Your book list</h3>
+            {% for book in books %}
+            {% if book.to_dict().uid == uid %}
+        <div class="card bg-light mb-3 flex_vertical_container" style="max-width: 20rem;" id="card_style">
+            <div class="card-header">posted at: {{book.to_dict().posted_at.year}}/{{book.to_dict().posted_at.month}}/{{book.to_dict().posted_at.day}}</div>
+            <div class="card-body">
+                <h4 class="card-title">{{ book.to_dict().book_title }}</h4>
+                <p class="card-text">{{ book.to_dict().book_author }}</p>
+                <p>{{ book.to_dict().book_summary }}</p>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
     </div>
-    {% endif %}
-    {% endfor %}
 {% endblock %}
