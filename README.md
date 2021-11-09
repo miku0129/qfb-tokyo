@@ -1,6 +1,6 @@
 # Project - Book list 📚
 
-### About 
+#### About 
 ---
 
 I created a full-stack app to manage the book lists for the book club I belong to.
@@ -9,14 +9,11 @@ This is the final project deliverable for CS50x.<br>
 
 From 2021/10/17 to 2021/11/7, Four weeks
 
-### Video Demo
----
-
-https://youtu.be/LKHt2ZldNg0
+#### Video Demo: https://youtu.be/LKHt2ZldNg0
 
 [![alt設定](http://img.youtube.com/vi/LKHt2ZldNg0/0.jpg)](https://www.youtube.com/watch?v=LKHt2ZldNg0)
 
-### Tech
+#### Tech
 ---
 
 - Python 3.10.10
@@ -24,14 +21,30 @@ https://youtu.be/LKHt2ZldNg0
 - Firebase for Firestore and Authentication.
 - Heroku
 
-### Structure
+#### Structure
 ---
 
-M: Data is stored in Firestore - Firebase<br>
-C: Python and Flask manage data between the database and the view<br>
-V: jinjya provide templates for the view<br>
+MCV model 
+- M,  Data is stored in Firestore - Firebase
+- C,  Python and Flask manage data between the database and the view
+- V,  jinjya provide templates for the view
 
-### Development
+app.py contains main functions to contlolle model and view. It also initialized Firebase_admin to use Firestore and autentication. 
+helpers.py contains functions which be used in app.py. I sepalated functions to make them readable. 
+Pipfile and Pipfile.lock stores information about dependencies of my projects. 
+Prockfile, requrements.txt and runtime.txt contains information to deploy my project to Heroku. <br>
+
+MCV model 
+- M, データはFirestore - Firebaseに保存されています
+- C, PythonとFlaskがデータベースとビューの間のデータを管理します
+- V, jinjyaはビューのためのテンプレートを提供します
+
+app.pyには、モデルとビューを接続するための主要な関数が含まれています。また、Firebase_adminを初期化し、FirestoreとAutenticationを使用しています。
+helpers.py は app.py で使用される関数を含んでいます。読みやすいように関数を分けています。
+PipfileとPipfile.lockは、私のプロジェクトの依存関係についての情報を格納しています。
+Prockfile, requrements.txt, runtime.txtには、Herokuにプロジェクトをデプロイするための情報が格納されています。
+
+#### Development
 ---
 
 ```
@@ -72,7 +85,7 @@ pipenv exit
 
 ```
 
-### Challenges
+#### Description: 
 ---
 
 The first challenge was that creating an environment for creating a product. Since I'd like to minimize my project, I needed to set up for my VSCode to debug.<br>
@@ -85,7 +98,7 @@ To solve those issues, I read error logs and researched with that words. Through
 3つ目の課題は、Pythonでcreckイベントを実装する方法を見つけることでした。より良いユーザー体験のために重要だと思ったので、本に投票するためのボタンを実装する方法の研究に時間を費やしました。そして、jQueryとajaxを使うことにしました。<br>
 このような問題を解決するために、私はエラーログを読み、その言葉を使って研究しました。このような経験を通して、エラーメッセージを読むことに自信を持つことができました。<br>。
 
-### Futre features
+#### Futre features
 ---
 
 - Users can leave comments for each book
