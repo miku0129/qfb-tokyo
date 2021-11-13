@@ -235,7 +235,7 @@ def edit_add():
         
         user = auth.get_user_by_email(session['usr'])
         
-        data = {"book_title": book_title, "book_author": book_author, "delete_flag": 0, "book_summary": book_summary, "posted_at": firestore.SERVER_TIMESTAMP, "recommended_by": user.display_name, "uid": user.uid,"votes": 0}
+        data = {"book_title": book_title.strip(), "book_author": book_author.strip(), "delete_flag": 0, "book_summary": book_summary, "posted_at": firestore.SERVER_TIMESTAMP, "recommended_by": user.display_name, "uid": user.uid,"votes": 0}
 
         # Ensure the books hasn't been submitted 
         books = db.collection('books')
