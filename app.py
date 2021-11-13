@@ -205,8 +205,8 @@ def reset():
 def edit_add():
     if request.method == 'POST':
         
-        book_title = request.form['book_title']
-        book_author = request.form['book_author']
+        book_title = request.form['book_title'].strip()
+        book_author = request.form['book_author'].strip()
         book_summary = request.form['book_summary']
         
         # Ensure book_title was submitted
@@ -235,7 +235,7 @@ def edit_add():
         
         user = auth.get_user_by_email(session['usr'])
         
-        data = {"book_title": book_title.strip(), "book_author": book_author.strip(), "delete_flag": 0, "book_summary": book_summary, "posted_at": firestore.SERVER_TIMESTAMP, "recommended_by": user.display_name, "uid": user.uid,"votes": 0}
+        data = {"book_title": book_title, "book_author": book_author, "delete_flag": 0, "book_summary": book_summary, "posted_at": firestore.SERVER_TIMESTAMP, "recommended_by": user.display_name, "uid": user.uid,"votes": 0}
 
         # Ensure the books hasn't been submitted 
         books = db.collection('books')
@@ -263,7 +263,7 @@ def edit_add():
 def edit_delete():
         if request.method == 'POST':
             
-            delete_book = request.form['delete_book']
+            delete_book = request.form['delete_book'].strip()
 
             uid= auth.get_user_by_email(session['usr']).uid
 
