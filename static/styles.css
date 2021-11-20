@@ -47,6 +47,10 @@
     margin-top: 20px;
 }
 
+.approve {
+    font-size: x-large;
+    text-decoration: underline;
+}
 
 /* parts */
 body{
