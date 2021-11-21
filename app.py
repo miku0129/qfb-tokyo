@@ -211,27 +211,27 @@ def edit_add():
         
         # Ensure book_title was submitted
         if not request.form.get("book_title"):
-            return render_template("edit_add.html", msg="Must provide book title")
+            return render_template("edit_add.html", msg="Must provide book title", accept="OK")
         
         # Ensure book_title is less than 30 characters 
         elif len(book_title) > 30:
-            return render_template("edit_add.html", msg="Book title must be less than 30 characters")
+            return render_template("edit_add.html", msg="Book title must be less than 30 characters", accept="OK")
 
         # Ensure book_author was submitted
         elif not request.form.get("book_author"):
-            return render_template("edit_add.html", msg="Must provide author")
+            return render_template("edit_add.html", msg="Must provide author", accept="OK")
         
         # Ensure book_author is less than 30 characters 
         elif len(book_author) > 30:
-            return render_template("edit_add.html", msg="Author name must be less than 30 characters")
+            return render_template("edit_add.html", msg="Author name must be less than 30 characters", accept="OK")
 
         # Ensure book_summary was submitted
         elif not request.form.get("book_summary"):
-            return render_template("edit_add.html", msg="Make short summary")
+            return render_template("edit_add.html", msg="Make short summary", accept="OK")
         
         # Ensure book_summary is less than 140 characters 
         elif len(book_summary) > 140:
-            return render_template("edit_add.html", msg="Summary must be less than 140 characters")
+            return render_template("edit_add.html", msg="Summary must be less than 140 characters", accept="OK")
         
         user = auth.get_user_by_email(session['usr'])
         
@@ -244,14 +244,14 @@ def edit_add():
             if doc.to_dict()['book_title'] == book_title:
                 books = db.collection('books')
                 docs = books.stream()
-                return render_template("edit_add.html", uid=user.uid, books=docs, msg="The book has been listed")
+                return render_template("edit_add.html", uid=user.uid, books=docs, msg="The book has been listed", accept="OK")
 
         doc_ref = db.collection('books').document(book_title)
         doc_ref.set(data)
 
         books = db.collection('books')
         docs = books.stream()
-        return render_template('edit_add.html', uid=user.uid, books=docs, msg="The book is successfully listed")
+        return render_template('edit_add.html', uid=user.uid, books=docs, msg="The book is successfully listed", accept="OK")
 
     else:
         uid= auth.get_user_by_email(session['usr']).uid
@@ -269,7 +269,7 @@ def edit_delete():
 
             # Ensure book_title was submitted
             if not request.form.get("delete_book"):
-                return render_template("edit_delete.html", msg="Must provide book title")
+                return render_template("edit_delete.html", msg="Must provide book title", accept="OK")
 
             books = db.collection('books')
             docs = books.stream()
@@ -278,15 +278,15 @@ def edit_delete():
                 if doc.to_dict()['book_title'] == delete_book:
                     # Ensure that book was submitted by the user
                     if not doc.to_dict()['uid'] == uid:
-                        return render_template("edit_delete.html", uid=uid, books=docs, msg="You can't delete this book")
+                        return render_template("edit_delete.html", uid=uid, books=docs, msg="You can't delete this book", accept="OK")
         
                     db.collection('books').document(delete_book).delete()
                     books = db.collection('books')
                     docs = books.stream()
-                    return render_template('edit_delete.html', uid=uid, books=docs, msg="The book is successfully deleted")
+                    return render_template('edit_delete.html', uid=uid, books=docs, msg="The book is successfully deleted", accept="OK")
                 else:
                     continue
-            return render_template('edit_delete.html', uid=uid, books=docs, msg="The title is not found")
+            return render_template('edit_delete.html', uid=uid, books=docs, msg="The title is not found", accept="OK")
         else:
             uid= auth.get_user_by_email(session['usr']).uid
             books = db.collection('books')

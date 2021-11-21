@@ -19,11 +19,16 @@
         <h2 style="color:orangered;">{{msg}}</h2>
         </div>
         <div>
+            <a href="./edit_delete"><p class="approve">{{accept}}</h4></p>
+        </div>
+        <div>
             <a href="./edit_add">Back</a>
         </div>
     </div>
-    <div class="flex_vertical_container">
-        <h3 class="space_top_20px">Your book list</h3>
+
+    <!-- <h3 class="space_top_20px">Your book list</h3> -->
+
+    <div class="flex_container">
             {% for book in books %}
             {% if book.to_dict().uid == uid %}
         <div class="card bg-light mb-3 flex_vertical_container" style="max-width: 20rem;" id="card_style">

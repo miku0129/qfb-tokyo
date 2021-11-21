@@ -22,16 +22,19 @@
     </form>
     <div class="message_style flex_vertical_container">
         <div>
-        <h2 style="color:orangered;">{{msg}}</h2>
+            <h2 style="color:orangered;">{{msg}}</h2>
+        </div>
+        <div>
+            <a href="./edit_add" class="approve"><p class="approve">{{accept}}</p></a>
         </div>
         <div>
             <a href="./edit_delete">Delete a book?</a>
         </div>
     </div>
 
-    <div class="flex_vertical_container">
-        <h3 class="space_top_20px">Your book list</h3>
-
+    <!-- <h3 class="space_top_20px">Your book list</h3> -->
+    <div class="flex_container">
+    
             {% for book in books %}
             {% if book.to_dict().uid == uid %}
 

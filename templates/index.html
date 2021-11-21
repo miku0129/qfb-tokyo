@@ -5,9 +5,11 @@
 {% endblock %}
 
 {% block main %}
+
     <p>{{data[0]}} is login</p>
     <p>Vote</p>
-    <div class="flex_vertical_container container_style_1">
+
+    <div class="flex_container container_style_1">
         {% for book in data[1] %}        
             <div class="card bg-light mb-3" style="max-width: 20rem;" id="card_style">
                 <div class="card-header">{{ book.to_dict().recommended_by}}'s fave</div>
