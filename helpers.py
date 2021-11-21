@@ -40,17 +40,23 @@ def update_status_of_books_and_book_shelf(db, docs_of_books, ref, title, hasVote
     for doc_of_books in docs_of_books:
         if doc_of_books.to_dict()['book_title'] == title:
             if hasVote == 1:
-                update_books_status = doc_of_books.to_dict()['votes'] - 1; 
+                vote_number = doc_of_books.to_dict()['votes'] - 1; 
                 hasVote = 0
             else:
-                update_books_status = doc_of_books.to_dict()['votes'] + 1; 
+                vote_number = doc_of_books.to_dict()['votes'] + 1; 
                 hasVote = 1
 
-            # update the status of books
-            db.collection('books').document(title).update({"votes":update_books_status})
+            # update 'books'
+            db.collection('books').document(title).update({"votes":vote_number})
 
-            # update the status of book_shelf
-            ref.set({ u'{}'.format(title) : hasVote}, merge=True)
+            # update 'book_shelf'
+            ref.set({ u'{}'.format(en_key(title)) : hasVote}, merge=True)
             break
         else:
             continue
+
+def en_key(value):
+        return value.replace(' ', ('_'))
+
+def de_key(key):
+    return key.replace('_', ' ')

@@ -18,13 +18,39 @@
                   <p class="card-text">{{ book.to_dict().book_author }}</p>
                   <p class="card-text">{{ book.to_dict().book_summary }}</p>
                 </div>
+
                 <div class="button_group">
                     <div class="space_right_5px">
                         <p class="text-secondary">{{ book.to_dict().votes}} voted</p>
                     </div>
-                    <button type="button" class="btn btn-secondary" onclick="vote('{{book.to_dict().book_title}}')">Vote</button>
+
+                    <!-- if 'book_shelf exist' -->
+                    {% if data[2] %}
+                        <!-- if the book_title exists as a key in 'book_shelf' -->
+                        {% if book.to_dict().book_title.replace(' ', '_') in data[2] %}
+
+                            <!-- if the value of 'book_title' in 'book_shelf' is 0, button shows "Vote"  -->
+                            {% for key in data[2] if key == (book.to_dict().book_title).replace(' ', '_') and data[2].get(key) == 0 %}
+                            <button type="button" class="btn btn-secondary" onclick="vote('{{book.to_dict().book_title}}')">Vote</button>
+                            {% endfor %}
+                            
+                            <!-- if the value of 'book_title' in 'book_shelf' is 1, button shows "Unvote"  -->
+                            {% for key in data[2] if (key == book.to_dict().book_title.replace(' ', '_') and data[2].get(key) == 1 ) %}
+                            <button type="button" class="btn btn-secondary" onclick="vote('{{book.to_dict().book_title}}')">Unvote</button>
+                            {% endfor %}
+
+                            <!-- if the book_title doesn't exists as a key in 'book_shelf' shows "Vote" -->
+                            {% else %}
+                                <button type="button" class="btn btn-secondary" onclick="vote('{{book.to_dict().book_title}}')">Vote</button>
+                        {% endif %}
+                    <!-- if 'book_shelf doesn't exist' -->
+                    {% else %}
+                        <button type="button" class="btn btn-secondary" onclick="vote('{{book.to_dict().book_title}}')">Vote</button>
+                    {% endif %}
+
                 </div>
-              </div>
+
+            </div>
         {% endfor %}
     </div>
 

@@ -6,7 +6,7 @@ from firebase_admin import firestore, auth
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 from flask_session import Session
 import configparser
-from helpers import sign_in_with_email_and_password, print_pretty, update_status_of_books_and_book_shelf
+from helpers import sign_in_with_email_and_password, print_pretty, update_status_of_books_and_book_shelf, en_key, de_key
 
 app = Flask(__name__)
 
@@ -135,31 +135,43 @@ def index():
 
     user = auth.get_user_by_email(usr)
 
+    # update 'books' and 'book_shelf' with vote/unvote
     if request.method == 'POST':
-        book_title = request.form['val'] # ajax send data as a form in default 
+        # data from ajax event 
+        book_title = request.form['val'] 
 
-        book_shelf_ref = db.collection(u'book_shelf').document(u'{}'.format( user.uid) )
+        book_shelf_ref = db.collection(u'book_shelf').document(u'{}'.format(user.uid))
         collection_of_bookshelf = book_shelf_ref.get()
         collection_bookshelf_dict = collection_of_bookshelf.to_dict()
+        # if user has 'book_shelf', update it 
         if collection_bookshelf_dict:
-            for book in collection_bookshelf_dict:
-                # collection_dict[book] == 1 : has voted 
-                # collection_dict[book] == 0 : hasn't voted or unvoted
-                if book == book_title:
+            for key in collection_bookshelf_dict:
+                # collection_dict[key] == 1 : has voted 
+                # collection_dict[key] == 0 : hasn't voted or unvoted
+
+                if key == en_key(book_title):
                     books = db.collection('books')
                     docs = books.stream()
-                    update_status_of_books_and_book_shelf(db, docs, book_shelf_ref, book_title, collection_bookshelf_dict[book])
+                    update_status_of_books_and_book_shelf(db, docs, book_shelf_ref, book_title, collection_bookshelf_dict[key])
                     return redirect(url_for("index"))
                 else:
                     continue
+        # if user hasn't had 'book_shelf', create it 
         books = db.collection('books')
         docs = books.stream()
         update_status_of_books_and_book_shelf(db, docs, book_shelf_ref, book_title, 0)
         return redirect(url_for("index"))
+
+    # show listed 'books'
     else:
+        # 'books'
         books = db.collection('books')
         docs = books.stream()
-        return render_template("index.html", data=[user.display_name, docs])
+        # user's 'book_shelf'
+        book_shelf_doc = db.collection(u'book_shelf').document(u'{}'.format( user.uid))
+        book_shelf_dict = book_shelf_doc.get().to_dict()
+
+        return render_template("index.html", data=[user.display_name, docs, book_shelf_dict])
 
 
 @app.route("/reset", methods=['GET', 'POST'])
@@ -279,10 +291,16 @@ def edit_delete():
                     # Ensure that book was submitted by the user
                     if not doc.to_dict()['uid'] == uid:
                         return render_template("edit_delete.html", uid=uid, books=docs, msg="You can't delete this book", accept="OK")
-        
+
+                    # Delete document in 'books'
                     db.collection('books').document(delete_book).delete()
                     books = db.collection('books')
                     docs = books.stream()
+                    # Delete filed in 'book_shelf'
+                    book_shelf_ref = db.collection('book_shelf').document(u'{}'.format(uid))
+                    book_shelf_ref.update({
+                        u'{}'.format(en_key(delete_book)): firestore.DELETE_FIELD})
+
                     return render_template('edit_delete.html', uid=uid, books=docs, msg="The book is successfully deleted", accept="OK")
                 else:
                     continue
