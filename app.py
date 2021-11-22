@@ -97,17 +97,24 @@ def signin():
         # Ensure email was submitted
         if not request.form.get("email"):
             return render_template("signin.html", msg="Provide email")
+        
+        # Ensure email hasn't been used 
+        try:
+            auth.get_user_by_email(email)
+            return render_template("signin.html", msg="That email is already resistered. Please log in from login page.")
+        except firebase_admin.exceptions.FirebaseError:
+            print("This email is able to use for resistration")
 
         # Ensure password was submitted
-        elif not request.form.get("password"):
+        if not request.form.get("password"):
             return render_template("signin.html", msg="Provide password")
         
-        # Ensure password is bigger than 7 characters 
+        # Ensure password is bigger than 6 characters 
         elif len(password) < 6:
             return render_template("signin.html", msg="Password must be a string at least 6 characters long")
 
         # Ensure confirmation password was submitted
-        elif not request.form.get("confirmation_password"):
+        if not request.form.get("confirmation_password"):
             return render_template("signin.html", msg="Provide confirmation password")
         
         elif not request.form.get("password") == request.form.get("confirmation_password"):
