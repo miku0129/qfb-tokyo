@@ -64,13 +64,17 @@ flask run
 pipenv install [ライブラリ名]
 
 バージョン管理は git コマンドで行う
+開発は developブランチ
+本番は mainブランチで管理する
 
 2) デプロイ
 ヘロクにログインする
 heroku login
 
 デプロイ
-git push heroku main
+git checkout main // ローカルのメインに移動
+git pull main // リモートのメインから最新のコードを取得する
+git push heroku main //ヘロクにデプロイする
 
 デプロイしたページを開く
 heroku open
