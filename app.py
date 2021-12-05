@@ -233,24 +233,24 @@ def edit_add():
             return render_template("edit_add.html", msg="Must provide book title", accept="OK")
         
         # Ensure book_title is less than 30 characters 
-        elif len(book_title) > 30:
-            return render_template("edit_add.html", msg="Book title must be less than 30 characters", accept="OK")
+        elif len(book_title) > 100:
+            return render_template("edit_add.html", msg="Book title must be less than 100 characters", accept="OK")
 
         # Ensure book_author was submitted
         elif not request.form.get("book_author"):
             return render_template("edit_add.html", msg="Must provide author", accept="OK")
         
         # Ensure book_author is less than 30 characters 
-        elif len(book_author) > 30:
-            return render_template("edit_add.html", msg="Author name must be less than 30 characters", accept="OK")
+        elif len(book_author) > 100:
+            return render_template("edit_add.html", msg="Author name must be less than 100 characters", accept="OK")
 
         # Ensure book_summary was submitted
         elif not request.form.get("book_summary"):
             return render_template("edit_add.html", msg="Make short summary", accept="OK")
         
         # Ensure book_summary is less than 140 characters 
-        elif len(book_summary) > 140:
-            return render_template("edit_add.html", msg="Summary must be less than 140 characters", accept="OK")
+        elif len(book_summary) > 800:
+            return render_template("edit_add.html", msg="Summary must be less than 800 characters", accept="OK")
         
         user = auth.get_user_by_email(session['usr'])
         
