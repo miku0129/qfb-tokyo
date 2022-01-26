@@ -1,7 +1,7 @@
 import json, os, env, sys
 import requests
 
-import tkinter
+import tkinter as tk
 
 import firebase_admin
 from firebase_admin import credentials
@@ -326,10 +326,26 @@ def edit_delete():
 # show a book list which user had posted 
 @app.route('/userlist', methods=['GET', 'POST'])
 def show_mylist():
-    isButtonClicked = False
+    isButtonClicked = 'notClicked'
     if request.method == 'POST':
+
         isButtonClicked = request.form['val']
         print("is button clicked: ", isButtonClicked)
+        if isButtonClicked == 'clicked':
+            root = tk.Tk()
+
+            # メッセージボックスを最前面に表示
+            root.attributes("-topmost", True)
+            #　rootのみ操作可能
+            root.grab_set() 
+
+            # ウインドウのタイトルを定義する
+            root.title(u'Buttonを使ってみる')
+
+
+            root.mainloop()
+
+
         uid= auth.get_user_by_email(session['usr']).uid
         books = db.collection('books')
         docs = books.stream()

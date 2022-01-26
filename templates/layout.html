@@ -61,7 +61,7 @@
         crossorigin="anonymous"></script> -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
-            // @index.html
+            //@index.html
             function vote(book_title){
                 let url = ""; 
                 $.ajax({
@@ -81,22 +81,24 @@
                 }()); 
             }
 
-            // @mylist.html
+            //@userlist.html
             function show_deleteDialogue(){
                 console.log("delete button is clicked"); 
                 let url = ""; 
                 $.ajax({
-                    url: "/mylist",
-                    data: { val: true },
+                    url: "/userlist",
+                    data: { val: 'clicked' },
                     type: "POST",
-                    dataType: "json",
+                    // dataType: "json",
+                    dataType: "html",
                     success: function(data) {
                         response = data;
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        let xhr = XMLHttpRequest;
+                        console.warn(xhr.responseText);
                         console.log("Error occured while requested \n" + url + "\n" + textStatus +":\n" + errorThrown);
                     }}); 
-
             }
         </script>
     </body>
