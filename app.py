@@ -323,17 +323,30 @@ def edit_delete():
             return render_template('edit_delete.html', uid=uid, books=docs)
 
 
-@app.route('/mylist', methods=['GET'])
+# show a book list which user had posted 
+@app.route('/userlist', methods=['GET', 'POST'])
 def show_mylist():
-    uid= auth.get_user_by_email(session['usr']).uid
-    books = db.collection('books')
-    docs = books.stream()
-    return render_template('mylist.html', uid=uid, books=docs)
+    isButtonClicked = False
+    if request.method == 'POST':
+        isButtonClicked = request.form['val']
+        print("is button clicked: ", isButtonClicked)
+        uid= auth.get_user_by_email(session['usr']).uid
+        books = db.collection('books')
+        docs = books.stream()
+        return render_template('userlist.html', uid=uid, books=docs)
+
+
+    else: 
+        uid= auth.get_user_by_email(session['usr']).uid
+        books = db.collection('books')
+        docs = books.stream()
+
+
+        return render_template('userlist.html', uid=uid, books=docs)
 
 
 @app.route('/usage')
 def usage():
-    print("hello")
     return render_template('usage.html')
 
 

@@ -55,10 +55,11 @@
         </main>
         <footer>
         </footer>
-        <script
+        <!-- <script
         src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
             // @index.html
             function vote(book_title){
@@ -82,7 +83,20 @@
 
             // @mylist.html
             function show_deleteDialogue(){
-                console.log("delete"); 
+                console.log("delete button is clicked"); 
+                let url = ""; 
+                $.ajax({
+                    url: "/mylist",
+                    data: { val: true },
+                    type: "POST",
+                    dataType: "json",
+                    success: function(data) {
+                        response = data;
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log("Error occured while requested \n" + url + "\n" + textStatus +":\n" + errorThrown);
+                    }}); 
+
             }
         </script>
     </body>
