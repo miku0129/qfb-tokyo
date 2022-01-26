@@ -321,6 +321,7 @@ def edit_delete():
 
 @app.route('/usage')
 def usage():
+    print("hello")
     return render_template('usage.html')
 
 
