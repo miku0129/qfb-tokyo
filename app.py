@@ -334,10 +334,21 @@ def show_mylist():
         if isButtonClicked == 'clicked':
             root = tk.Tk()
 
+            # メッセージボックスをスクリーン中央に表示
+            window_height = 400
+            window_width = 500
+
+            screen_width = root.winfo_screenwidth()
+            screen_height = root.winfo_screenheight()
+
+            x_cordinate = int((screen_width/2) - (window_width/2))
+            y_cordinate = int((screen_height/2) - (window_height/2))
+
+            root.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
+
             # メッセージボックスを最前面に表示
             root.attributes("-topmost", True)
-            #　rootのみ操作可能
-            root.grab_set() 
+
 
             # ウインドウのタイトルを定義する
             root.title(u'Buttonを使ってみる')
