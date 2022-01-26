@@ -1,5 +1,8 @@
 import json, os, env, sys
 import requests
+
+import tkinter
+
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore, auth
@@ -7,6 +10,7 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for, s
 from flask_session import Session
 import configparser
 from helpers import sign_in_with_email_and_password, print_pretty, update_status_of_books_and_book_shelf, en_key, de_key
+
 
 app = Flask(__name__)
 
@@ -317,6 +321,14 @@ def edit_delete():
             books = db.collection('books')
             docs = books.stream()
             return render_template('edit_delete.html', uid=uid, books=docs)
+
+
+@app.route('/mylist', methods=['GET'])
+def show_mylist():
+    uid= auth.get_user_by_email(session['usr']).uid
+    books = db.collection('books')
+    docs = books.stream()
+    return render_template('mylist.html', uid=uid, books=docs)
 
 
 @app.route('/usage')
