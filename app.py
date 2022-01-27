@@ -331,7 +331,7 @@ def show_userlist():
     isDelete = True
     isReport = False
 
-    def openDialog(book):
+    def openDialog(bookTitle):
         root = tk.Tk()
 
         # メッセージボックスをスクリーン中央に表示
@@ -353,9 +353,28 @@ def show_userlist():
 
 
         #delete the target post
-        def deletePost():
-            print('target book: ', book)
-            print('post is deleted')
+        def deleteBook():
+            print('target book: ', bookTitle)
+
+            uid= auth.get_user_by_email(session['usr']).uid
+
+            books = db.collection('books')
+            docs = books.stream()
+            for doc in docs: 
+                if doc.to_dict()['book_title'] == bookTitle:
+
+                    # Delete document in 'books'
+                    db.collection('books').document(bookTitle).delete()
+                    books = db.collection('books')
+                    docs = books.stream()
+                    # Delete filed in 'book_shelf'
+                    book_shelf_ref = db.collection('book_shelf').document(u'{}'.format(uid))
+                    book_shelf_ref.update({
+                        u'{}'.format(en_key(bookTitle)): firestore.DELETE_FIELD})
+                else:
+                    continue
+
+            print('the book is deleted')
             root.destroy()
 
         def cancelAction():
@@ -375,7 +394,7 @@ def show_userlist():
             Static1.pack()
 
             #ボタン
-            Button_delete = tk.Button(text=u'Delete', width=20, command=lambda:deletePost())
+            Button_delete = tk.Button(text=u'Delete', width=20, command=lambda:deleteBook())
             Button_delete.pack()
             Button_cancel = tk.Button(text=u'Cancel', width=20, command=lambda:cancelAction())
             Button_cancel.pack()
