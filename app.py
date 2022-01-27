@@ -331,7 +331,7 @@ def show_userlist():
     isDelete = True
     isReport = False
 
-    def openDialog():
+    def openDialog(book):
         root = tk.Tk()
 
         # メッセージボックスをスクリーン中央に表示
@@ -354,12 +354,18 @@ def show_userlist():
 
         #delete the target post
         def deletePost():
+            print('target book: ', book)
             print('post is deleted')
             root.destroy()
+
+        def cancelAction():
+            print('command is cancled')
+            root.destroy()
+
         
         #close the dialog
         def closeDialog():
-            print('dialog is close')
+            print('dialog is closed')
             root.destroy()
 
         
@@ -369,11 +375,14 @@ def show_userlist():
             Static1.pack()
 
             #ボタン
-            Button = tk.Button(text=u'Delete', width=50, command=lambda:deletePost())
-            Button.pack()
+            Button_delete = tk.Button(text=u'Delete', width=20, command=lambda:deletePost())
+            Button_delete.pack()
+            Button_cancel = tk.Button(text=u'Cancel', width=20, command=lambda:cancelAction())
+            Button_cancel.pack()
+
 
         elif isReport == True:
-            Static1 = tk.Label(text=u'Your post is deleted')
+            Static1 = tk.Label(text=u'Done')
             Static1.pack()
 
             #ボタン
@@ -383,13 +392,14 @@ def show_userlist():
         root.mainloop()
 
     if request.method == 'POST':
-        open_dialog = request.form['val']
+        book_title = request.form['val']
+        open_dialog = request.form['isOpen']
 
         if open_dialog == 'true':
-            openDialog()
+            openDialog(book_title)
             isDelete = False
             isReport = True
-            openDialog()
+            openDialog(book_title)
 
         uid= auth.get_user_by_email(session['usr']).uid
         books = db.collection('books')
