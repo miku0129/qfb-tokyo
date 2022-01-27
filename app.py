@@ -326,35 +326,88 @@ def edit_delete():
 # show a book list which user had posted 
 @app.route('/userlist', methods=['GET', 'POST'])
 def show_mylist():
-    isButtonClicked = 'notClicked'
-    if request.method == 'POST':
 
-        isButtonClicked = request.form['val']
-        print("is button clicked: ", isButtonClicked)
-        if isButtonClicked == 'clicked':
-            root = tk.Tk()
+    open_deleteDialog = 'false'
+
+    if request.method == 'POST':
+        open_deleteDialog = request.form['val']
+
+        # if user clicked <delete> button, open delete dialog
+        if open_deleteDialog == 'true':
+            
+            root1 = tk.Tk()
 
             # メッセージボックスをスクリーン中央に表示
             window_height = 400
             window_width = 500
 
-            screen_width = root.winfo_screenwidth()
-            screen_height = root.winfo_screenheight()
+            screen_width = root1.winfo_screenwidth()
+            screen_height = root1.winfo_screenheight()
 
             x_cordinate = int((screen_width/2) - (window_width/2))
             y_cordinate = int((screen_height/2) - (window_height/2))
 
-            root.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
+            root1.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
 
             # メッセージボックスを最前面に表示
-            root.attributes("-topmost", True)
-
-
+            root1.attributes("-topmost", True)
             # ウインドウのタイトルを定義する
-            root.title(u'Buttonを使ってみる')
+            root1.title(u'QFB Tokyo')
+
+            #ラベル
+            Static1 = tk.Label(text=u'Are you sure you want to delete your post ?')
+            Static1.pack()
+
+            #delete the target post
+            def deletePost(event):
+                print('post delete')
+                root1.destroy()
+                message()
+            
+            
+            #show message after deleting the post
+            def message():
+                root2 = tk.Tk()
+
+                # メッセージボックスをスクリーン中央に表示
+                window_height = 400
+                window_width = 500
+
+                screen_width = root2.winfo_screenwidth()
+                screen_height = root2.winfo_screenheight()
+
+                x_cordinate = int((screen_width/2) - (window_width/2))
+                y_cordinate = int((screen_height/2) - (window_height/2))
+
+                root2.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
+
+                # メッセージボックスを最前面に表示
+                root2.attributes("-topmost", True)
+                # ウインドウのタイトルを定義する
+                root2.title(u'QFB Tokyo')
+
+                def closeMessage(event):
+                    root2.destroy()
+
+                #ラベル
+                Static1 = tk.Label(text=u'Your post is deleted')
+                Static1.pack()
+
+                #ボタン
+                Button = tk.Button(text=u'OK', width=50)
+                Button.bind("<Button-1>",closeMessage) 
+                #左クリック（<Button-1>）されると，DeleteEntryValue関数を呼び出すようにバインド
+                Button.pack()
+                root2.mainloop()
 
 
-            root.mainloop()
+            #ボタン
+            # delete the post if <Delte> button is clicked
+            Button = tk.Button(text=u'Delete', width=50)
+            Button.bind("<Button-1>",deletePost) 
+            #左クリック（<Button-1>）されると，DeleteEntryValue関数を呼び出すようにバインド
+            Button.pack()
+            root1.mainloop()
 
 
         uid= auth.get_user_by_email(session['usr']).uid

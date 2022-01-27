@@ -82,12 +82,12 @@
             }
 
             //@userlist.html
-            function show_deleteDialogue(){
-                console.log("delete button is clicked"); 
+            function show_deleteDialog(){
+                console.log("button is clicked"); 
                 let url = ""; 
                 $.ajax({
                     url: "/userlist",
-                    data: { val: 'clicked' },
+                    data: {val: 'true'},
                     type: "POST",
                     // dataType: "json",
                     dataType: "html",
