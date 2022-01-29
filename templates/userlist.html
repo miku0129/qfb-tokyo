@@ -1,14 +1,16 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    delete book
+     user list
 {% endblock %}
 
 {% block main %}
 
     <div class="flex_container">
-            {% for book in books %}
-            {% if book.to_dict().uid == uid %}
+
+        
+        {% for book in books %}
+        {% if book.to_dict().uid == uid %}
         <div class="card bg-light mb-3 flex_vertical_container" style="max-width: 20rem;" id="card_style">
             <div class="card-header">posted at: {{book.to_dict().posted_at.year}}/{{book.to_dict().posted_at.month}}/{{book.to_dict().posted_at.day}}</div>
             <div class="card-body">
@@ -17,6 +19,8 @@
                 <p>{{ book.to_dict().book_summary }}</p>
             </div>
             <button type="button" class="btn btn-secondary" onclick="open_deleteDialog('{{book.to_dict().book_title}}')">Delete</button>
+
+            <p>{{msg}}</p>
         </div>
         {% endif %}
         {% endfor %}

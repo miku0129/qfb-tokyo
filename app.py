@@ -6,7 +6,7 @@ import tkinter as tk
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore, auth
-from flask import Flask, request, jsonify, render_template, redirect, url_for, session
+from flask import Flask, current_app, request, jsonify, render_template, redirect, url_for, session
 from flask_session import Session
 import configparser
 from helpers import sign_in_with_email_and_password, print_pretty, update_status_of_books_and_book_shelf, en_key, de_key
@@ -276,6 +276,10 @@ def edit_add():
         docs = books.stream()
         return render_template('edit_add.html', uid=user.uid, books=docs, msg="The book is successfully listed", accept="OK")
 
+        # return render_template('userlist.html', uid=user.uid, books=docs)
+
+
+
     else:
         uid= auth.get_user_by_email(session['usr']).uid
         books = db.collection('books')
@@ -327,7 +331,7 @@ def edit_delete():
 @app.route('/userlist', methods=['GET', 'POST'])
 def show_userlist():
 
-    open_dialog = 'false'
+    # open_dialog = 'false'
     isDelete = True
     isReport = False
 
@@ -347,7 +351,7 @@ def show_userlist():
         root.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
 
         # メッセージボックスを最前面に表示
-        root.attributes("-topmost", True)
+        # root.attributes("-topmost", True)
         # ウインドウのタイトルを定義する
         root.title(u'QFB Tokyo')
 
@@ -377,12 +381,7 @@ def show_userlist():
             print('the book is deleted')
             root.destroy()
 
-        def cancelAction():
-            print('command is cancled')
-            root.destroy()
-
-        
-        #close the dialog
+    
         def closeDialog():
             print('dialog is closed')
             root.destroy()
@@ -396,9 +395,8 @@ def show_userlist():
             #ボタン
             Button_delete = tk.Button(text=u'Delete', width=20, command=lambda:deleteBook())
             Button_delete.pack()
-            Button_cancel = tk.Button(text=u'Cancel', width=20, command=lambda:cancelAction())
+            Button_cancel = tk.Button(text=u'Cancel', width=20, command=lambda:closeDialog())
             Button_cancel.pack()
-
 
         elif isReport == True:
             Static1 = tk.Label(text=u'Done')
@@ -412,24 +410,24 @@ def show_userlist():
 
     if request.method == 'POST':
         book_title = request.form['val']
-        open_dialog = request.form['isOpen']
 
-        if open_dialog == 'true':
-            openDialog(book_title)
-            isDelete = False
-            isReport = True
-            openDialog(book_title)
+        openDialog(book_title)
+        isDelete = False
+        isReport = True
+        openDialog(book_title)
 
         uid= auth.get_user_by_email(session['usr']).uid
         books = db.collection('books')
         docs = books.stream()
-        return render_template('userlist.html', uid=uid, books=docs)
+        print('template is loaded')
+        return render_template('userlist.html', uid=uid, books=docs, msg="post")
+
 
     else: 
         uid= auth.get_user_by_email(session['usr']).uid
         books = db.collection('books')
         docs = books.stream()
-        return render_template('userlist.html', uid=uid, books=docs)
+        return render_template('userlist.html', uid=uid, books=docs, msg='get')
 
 
 @app.route('/usage')
@@ -444,4 +442,6 @@ def logout():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # app.run(debug=True)
+    app.run()
+

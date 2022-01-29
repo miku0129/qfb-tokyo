@@ -92,13 +92,19 @@
                     // dataType: "json",
                     dataType: "html",
                     success: function(data) {
+                        console.log("button is clicked " + data);
                         response = data;
+                        (function(){
+                    window.alert("Done");
+                    window.location.reload();
+                }());
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         let xhr = XMLHttpRequest;
                         console.warn(xhr.responseText);
                         console.log("Error occured while requested \n" + url + "\n" + textStatus +":\n" + errorThrown);
                     }}); 
+                   
             }
         </script>
     </body>
