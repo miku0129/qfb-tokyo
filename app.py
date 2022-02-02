@@ -326,7 +326,7 @@ def edit_delete():
             docs = books.stream()
             return render_template('edit_delete.html', uid=uid, books=docs)
 
-
+# 追記：tkInterはPythonサーバーが提供するツールなのでWebAppとして使うことはできない。 ------------
 # show a book list which contain only user had posted 
 @app.route('/userlist', methods=['GET', 'POST'])
 def show_userlist():
@@ -428,6 +428,8 @@ def show_userlist():
         books = db.collection('books')
         docs = books.stream()
         return render_template('userlist.html', uid=uid, books=docs, msg='get')
+
+# ----------追記：tkInterはPythonサーバーが提供するツールなのでWebAppとして使うことはできない。
 
 
 @app.route('/usage')
