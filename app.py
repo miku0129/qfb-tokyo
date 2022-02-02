@@ -328,106 +328,106 @@ def edit_delete():
 
 # 追記：tkInterはPythonサーバーが提供するツールなのでWebAppとして使うことはできない。 ------------
 # show a book list which contain only user had posted 
-@app.route('/userlist', methods=['GET', 'POST'])
-def show_userlist():
+# @app.route('/userlist', methods=['GET', 'POST'])
+# def show_userlist():
 
-    # open_dialog = 'false'
-    isDelete = True
-    isReport = False
+#     # open_dialog = 'false'
+#     isDelete = True
+#     isReport = False
 
-    def openDialog(bookTitle):
-        root = tk.Tk()
+#     def openDialog(bookTitle):
+#         root = tk.Tk()
 
-        # メッセージボックスをスクリーン中央に表示
-        window_height = 400
-        window_width = 500
+#         # メッセージボックスをスクリーン中央に表示
+#         window_height = 400
+#         window_width = 500
 
-        screen_width = root.winfo_screenwidth()
-        screen_height = root.winfo_screenheight()
+#         screen_width = root.winfo_screenwidth()
+#         screen_height = root.winfo_screenheight()
 
-        x_cordinate = int((screen_width/2) - (window_width/2))
-        y_cordinate = int((screen_height/2) - (window_height/2))
+#         x_cordinate = int((screen_width/2) - (window_width/2))
+#         y_cordinate = int((screen_height/2) - (window_height/2))
 
-        root.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
+#         root.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
 
-        # メッセージボックスを最前面に表示
-        # root.attributes("-topmost", True)
-        # ウインドウのタイトルを定義する
-        root.title(u'QFB Tokyo')
+#         # メッセージボックスを最前面に表示
+#         # root.attributes("-topmost", True)
+#         # ウインドウのタイトルを定義する
+#         root.title(u'QFB Tokyo')
 
 
-        #delete the target post
-        def deleteBook():
-            print('target book: ', bookTitle)
+#         #delete the target post
+#         def deleteBook():
+#             print('target book: ', bookTitle)
 
-            uid= auth.get_user_by_email(session['usr']).uid
+#             uid= auth.get_user_by_email(session['usr']).uid
 
-            books = db.collection('books')
-            docs = books.stream()
-            for doc in docs: 
-                if doc.to_dict()['book_title'] == bookTitle:
+#             books = db.collection('books')
+#             docs = books.stream()
+#             for doc in docs: 
+#                 if doc.to_dict()['book_title'] == bookTitle:
 
-                    # Delete document in 'books'
-                    db.collection('books').document(bookTitle).delete()
-                    books = db.collection('books')
-                    docs = books.stream()
-                    # Delete filed in 'book_shelf'
-                    book_shelf_ref = db.collection('book_shelf').document(u'{}'.format(uid))
-                    book_shelf_ref.update({
-                        u'{}'.format(en_key(bookTitle)): firestore.DELETE_FIELD})
-                else:
-                    continue
+#                     # Delete document in 'books'
+#                     db.collection('books').document(bookTitle).delete()
+#                     books = db.collection('books')
+#                     docs = books.stream()
+#                     # Delete filed in 'book_shelf'
+#                     book_shelf_ref = db.collection('book_shelf').document(u'{}'.format(uid))
+#                     book_shelf_ref.update({
+#                         u'{}'.format(en_key(bookTitle)): firestore.DELETE_FIELD})
+#                 else:
+#                     continue
 
-            print('the book is deleted')
-            root.destroy()
+#             print('the book is deleted')
+#             root.destroy()
 
     
-        def closeDialog():
-            print('dialog is closed')
-            root.destroy()
+#         def closeDialog():
+#             print('dialog is closed')
+#             root.destroy()
 
         
-        if  isDelete == True:
-            #ラベル
-            Static1 = tk.Label(text=u'Are you sure you want to delete your post ?')
-            Static1.pack()
+#         if  isDelete == True:
+#             #ラベル
+#             Static1 = tk.Label(text=u'Are you sure you want to delete your post ?')
+#             Static1.pack()
 
-            #ボタン
-            Button_delete = tk.Button(text=u'Delete', width=20, command=lambda:deleteBook())
-            Button_delete.pack()
-            Button_cancel = tk.Button(text=u'Cancel', width=20, command=lambda:closeDialog())
-            Button_cancel.pack()
+#             #ボタン
+#             Button_delete = tk.Button(text=u'Delete', width=20, command=lambda:deleteBook())
+#             Button_delete.pack()
+#             Button_cancel = tk.Button(text=u'Cancel', width=20, command=lambda:closeDialog())
+#             Button_cancel.pack()
 
-        elif isReport == True:
-            Static1 = tk.Label(text=u'Done')
-            Static1.pack()
+#         elif isReport == True:
+#             Static1 = tk.Label(text=u'Done')
+#             Static1.pack()
 
-            #ボタン
-            Button = tk.Button(text=u'OK', width=50, command=lambda:closeDialog())
-            Button.pack()
+#             #ボタン
+#             Button = tk.Button(text=u'OK', width=50, command=lambda:closeDialog())
+#             Button.pack()
 
-        root.mainloop()
+#         root.mainloop()
 
-    if request.method == 'POST':
-        book_title = request.form['val']
+#     if request.method == 'POST':
+#         book_title = request.form['val']
 
-        openDialog(book_title)
-        isDelete = False
-        isReport = True
-        openDialog(book_title)
+#         openDialog(book_title)
+#         isDelete = False
+#         isReport = True
+#         openDialog(book_title)
 
-        uid= auth.get_user_by_email(session['usr']).uid
-        books = db.collection('books')
-        docs = books.stream()
-        print('template is loaded')
-        return render_template('userlist.html', uid=uid, books=docs, msg="post")
+#         uid= auth.get_user_by_email(session['usr']).uid
+#         books = db.collection('books')
+#         docs = books.stream()
+#         print('template is loaded')
+#         return render_template('userlist.html', uid=uid, books=docs, msg="post")
 
 
-    else: 
-        uid= auth.get_user_by_email(session['usr']).uid
-        books = db.collection('books')
-        docs = books.stream()
-        return render_template('userlist.html', uid=uid, books=docs, msg='get')
+#     else: 
+#         uid= auth.get_user_by_email(session['usr']).uid
+#         books = db.collection('books')
+#         docs = books.stream()
+#         return render_template('userlist.html', uid=uid, books=docs, msg='get')
 
 # ----------追記：tkInterはPythonサーバーが提供するツールなのでWebAppとして使うことはできない。
 
