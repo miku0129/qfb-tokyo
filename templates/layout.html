@@ -82,25 +82,22 @@
             }
 
             // test 
-            function open_deleteDialog(book_title){
-                console.log("button is clicked"); 
-
+            function deleteBook(book_title){
                 const result = window.confirm("Once you delete a list, there is no going back. \nPlease be certain.");
 
                 if (result){
-                    console.log("true!")
                     let url = ""; 
                     $.ajax({
                         url: "/edit_test",
-                        data: {val: book_title, isOpen: 'true'},
+                        data: {val: book_title, isAdd: 'false', isDelete: 'true'},
                         type: "POST",
                         // dataType: "json",
                         dataType: "html",
                         success: function(data) {
-                            console.log("button is clicked " + data);
+                            // console.log("button is clicked " + data);
                             response = data;
                             (function(){
-                        window.alert("Done");
+                        window.alert("The book is deleted");
                         window.location.reload();
                     }());
                         },
@@ -110,7 +107,6 @@
                             console.log("Error occured while requested \n" + url + "\n" + textStatus +":\n" + errorThrown);
                         }}); 
                 } 
-
 
             }
 

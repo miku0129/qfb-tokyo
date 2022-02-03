@@ -329,6 +329,32 @@ def edit_delete():
 @app.route('/edit_test', methods=['GET', 'POST'])
 def edit():
     if request.method == 'POST':
+
+        book_title = request.form['val']
+        print('target book: ', book_title)
+        isAdd = request.form['isAdd']
+        isDelete = request.form['isDelete']
+
+        if isAdd == 'true':
+            return render_template('edit_test.html')
+
+        elif isDelete == 'true':
+            uid= auth.get_user_by_email(session['usr']).uid
+            books = db.collection('books')
+            docs = books.stream()
+            for doc in docs: 
+                if doc.to_dict()['book_title'] == book_title:
+                    # Delete document in 'books'
+                    db.collection('books').document(book_title).delete()
+                    books = db.collection('books')
+                    docs = books.stream()
+                    # Delete filed in 'book_shelf'
+                    book_shelf_ref = db.collection('book_shelf').document(u'{}'.format(uid))
+                    book_shelf_ref.update({
+                        u'{}'.format(en_key(book_title)): firestore.DELETE_FIELD})
+                else:
+                    continue
+            print('the book is deleted')
             return render_template('edit_test.html')
 
     else:
@@ -350,6 +376,6 @@ def logout():
 
 
 if __name__ == "__main__":
-    # app.run(debug=True)
-    app.run()
+    app.run(debug=True)
+    # app.run()
 

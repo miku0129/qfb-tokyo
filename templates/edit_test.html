@@ -6,25 +6,27 @@
 
 {% block main %}
 <p>Edit test</p>
-    <form action="/edit_delete" method="post">
-        <div class="container_style_3 flex_vertical_container">
-        <div class="form-group">
-            <input autocomplete="on" autofocus class="form-control" name="delete_book" placeholder="book title" type="text">
+    <!--
+        <form action="/edit_delete" method="post">
+            <div class="container_style_3 flex_vertical_container">
+            <div class="form-group">
+                <input autocomplete="on" autofocus class="form-control" name="delete_book" placeholder="book title" type="text">
+            </div>
+            <button class="btn btn-primary" type="submit">Delete</button>
+            </div>
+        </form>
+        <div class="message_style flex_vertical_container">
+            <div>
+            <h2 style="color:orangered;">{{msg}}</h2>
+            </div>
+            <div>
+                <a href="./edit_delete"><p class="approve">{{accept}}</h4></p>
+            </div>
+            <div>
+                <a href="./edit_add">Back</a>
+            </div>
         </div>
-        <button class="btn btn-primary" type="submit">Delete</button>
-        </div>
-    </form>
-    <div class="message_style flex_vertical_container">
-        <div>
-        <h2 style="color:orangered;">{{msg}}</h2>
-        </div>
-        <div>
-            <a href="./edit_delete"><p class="approve">{{accept}}</h4></p>
-        </div>
-        <div>
-            <a href="./edit_add">Back</a>
-        </div>
-    </div>
+    -->
 
     <!-- <h3 class="space_top_20px">Your book list</h3> -->
 
@@ -38,7 +40,7 @@
                 <p class="card-text">{{ book.to_dict().book_author }}</p>
                 <p>{{ book.to_dict().book_summary }}</p>
             </div>
-            <button type="button" class="btn btn-secondary" onclick="open_deleteDialog('{{book.to_dict().book_title}}')">Delete</button>
+            <button type="button" class="btn btn-secondary" onclick="deleteBook('{{book.to_dict().book_title}}')">Delete</button>
         </div>
         {% endif %}
         {% endfor %}
