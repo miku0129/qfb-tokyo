@@ -82,6 +82,365 @@
             }
 
             // test 
+            function addBook(){
+                console.log("add book"); 
+                // --------------------------------------------------------------------------------
+                // ドキュメントのクライアント領域のサイズを取得する関数
+                // --------------------------------------------------------------------------------
+                function DocumentGetClientSize(document_obj){
+                    const b = document_obj.body;
+                    const r = document_obj.documentElement;
+                    const w = b.clientWidth;
+                    let h;
+                    if(w < r.clientWidth)	w = r.clientWidth;
+                    if(document_obj.compatMode == "BackCompat"){
+                        h = b.clientHeight;
+                    }else{
+                        if(r.clientHeight){
+                            h = r.clientHeight;
+                        }else{
+                            h = b.clientHeight;
+                        }
+                    }
+                    return {
+                        width :w,
+                        height:h
+                    };
+                }
+                        // }
+                // --------------------------------------------------------------------------------
+                // ウィンドウのスクロール位置を取得する関数
+                // --------------------------------------------------------------------------------
+                function WindowGetScrollPosition(window_obj){
+                    if(window_obj.pageXOffset === undefined){
+                    }else if(window_obj.pageYOffset === undefined){
+                    }else{
+                        return {
+                            x:window_obj.pageXOffset,
+                            y:window_obj.pageYOffset
+                        };
+                    }
+
+                    const d = window_obj.document;
+                    return {
+                        x:(d.documentElement.scrollLeft || d.body.scrollLeft),
+                        y:(d.documentElement.scrollTop  || d.body.scrollTop )
+                    };
+                }
+                // --------------------------------------------------------------------------------
+                // エレメントに文字列をセットして、テキストノードを構築する関数
+                // --------------------------------------------------------------------------------
+                function ElementSetTextContent(element,str){
+                    if(element.textContent !== undefined){
+                        element.textContent = str;
+                    }
+                    if(element.innerText !== undefined){
+                        element.innerText = str;
+                    }
+                }
+                // --------------------------------------------------------------------------------
+                // カスタムダイアログ用のコンストラクタ関数
+                // --------------------------------------------------------------------------------
+                function CustomDialog(){
+
+                    // --------------------------------------------------------------------------------
+                    // プライベートな変数
+                    // --------------------------------------------------------------------------------
+                    let _this = this;
+                    let _element_popup = null;
+                    let _element_bg = null;
+
+                    // --------------------------------------------------------------------------------
+                    // 終了時に実行するイベント
+                    // --------------------------------------------------------------------------------
+                    this.onclose = null;
+
+                    // --------------------------------------------------------------------------------
+                    // メッセージを設定する
+                    // --------------------------------------------------------------------------------
+                    this.setMessage = function (str){
+
+                        // "custom_dialog_message" という ID 属性のエレメントを取得する
+                        const element_message = document.getElementById("custom_dialog_message");
+
+                        if(element_message){
+
+                            // エレメントに文字列をセットする
+                            ElementSetTextContent(element_message,str);
+                        }
+                    };
+                    // --------------------------------------------------------------------------------
+                    // 要素を取得する
+                    // --------------------------------------------------------------------------------
+                    this.getElement = function (){
+                        // "custom_dialog_body" という ID 属性のエレメントを取得する
+                        return document.getElementById("custom_dialog_body");
+                    };
+
+                    // --------------------------------------------------------------------------------
+                    // 幅を設定する
+                    // --------------------------------------------------------------------------------
+                    this.setWidth = function (width){
+
+                        // CSSStyleDeclaration オブジェクトを取得
+                        let style = _element_popup.style;
+
+                        // エレメントを幅を変更
+                        style.width = (width) + "px";
+                    };
+
+                    // --------------------------------------------------------------------------------
+                    // 更新
+                    // --------------------------------------------------------------------------------
+                    function update(){
+                        let style;
+
+                        // ドキュメントのクライアント領域のサイズを取得する
+                        const client_size = DocumentGetClientSize(document);
+
+                        // 現在のポップアップ用エレメントのバウンディングボックスのサイズを取得
+                        const rect = _element_popup.getBoundingClientRect();
+                        const element_width  = rect.right - rect.left;
+                        const element_height = rect.bottom - rect.top;
+
+                        // 中央に配置するための位置を計算する（クライアント座標系）
+                        let element_x = (client_size.width  / 2) - (element_width  / 2);
+                        let element_y = (client_size.height / 2) - (element_height / 2);
+
+                        // ウィンドウのスクロール位置を取得する
+                        const scroll_pos = WindowGetScrollPosition(window);
+
+                        // 位置をグローバル座標系に変換する
+                        element_x += scroll_pos.x;
+                        element_y += scroll_pos.y;
+
+                        // CSSStyleDeclaration オブジェクトを取得
+                        style = _element_popup.style;
+
+                        // エレメントを位置を修正する
+                        style.left = (element_x) + "px";
+                        style.top  = (element_y) + "px";
+
+                        // CSSStyleDeclaration オブジェクトを取得
+                        style = _element_bg.style;
+
+                        // エレメントを位置を修正する
+                        style.left = (scroll_pos.x) + "px";
+                        style.top  = (scroll_pos.y) + "px";
+
+                        // エレメントをサイズを修正する
+                        style.width  = (client_size.width)  + "px";
+                        style.height = (client_size.height) + "px";
+                    }
+
+                    // --------------------------------------------------------------------------------
+                    // 解放
+                    // --------------------------------------------------------------------------------
+                    function release(){
+                        let parent;
+
+                        // ------------------------------------------------------------
+                        // イベントのリッスンを終了する
+                        // ------------------------------------------------------------
+                        // イベントリスナーに対応している
+                        if(window.removeEventListener){
+
+                            // リサイズされるたびに実行されるイベント
+                            window.removeEventListener("resize" , update);
+                            // スクロールされるたびに実行されるイベント
+                            window.removeEventListener("scroll" , update);
+
+                        // アタッチイベントに対応している
+                        }else if(window.detachEvent){
+
+                            // リサイズされるたびに実行されるイベント
+                            window.detachEvent("onresize" , update);
+                            // スクロールされるたびに実行されるイベント
+                            window.detachEvent("onscroll" , update);
+
+                        }
+
+                        // ------------------------------------------------------------
+                        // エレメントを、ノードリストから除外する
+                        // ------------------------------------------------------------
+                        parent = _element_popup.parentNode;
+                        if(parent){
+                            parent.removeChild(_element_popup);
+                        }
+
+                        parent = _element_bg.parentNode;
+                        if(parent){
+                            parent.removeChild(_element_bg);
+                        }
+
+                    }
+
+                    // --------------------------------------------------------------------------------
+                    // 初期化
+                    // --------------------------------------------------------------------------------
+                    (function (){
+                        let style;
+
+                        // ------------------------------------------------------------
+                        // 背景用エレメント
+                        // ------------------------------------------------------------
+                        // エレメントを作成
+                        _element_bg = document.createElement("div");
+
+                        // スタイルを設定
+                        style = _element_bg.style;
+                        style.position = "absolute";
+                        style.backgroundColor = "#000";
+                        var opacity = 0.5;
+                        style.opacity = opacity;
+                        style.filter = "alpha(opacity=" + (opacity * 100) + ")";
+
+                        // BODY のノードリストに登録する
+                        document.body.appendChild(_element_bg);
+
+                        // ------------------------------------------------------------
+                        // ポップアップ用エレメント
+                        // ------------------------------------------------------------
+                        // ポップアップ用エレメントを作成
+                        _element_popup = document.createElement("div");
+
+                        // スタイルを設定する
+                        style = _element_popup.style;
+                        style.position = "absolute";
+                        style.width  = "400px";
+                        style.backgroundColor = "#fee";
+                        style.border = "5px #866 solid";
+                        style.borderRadius = "10px";
+                        style.boxShadow = "5px 5px 10px #444";
+                        style.lineHeight = "1.0";
+
+                        // BODY のノードリストに登録する
+                        document.body.appendChild(_element_popup);
+
+                        // ------------------------------------------------------------
+                        // HTML 文字列を指定して、DOM オブジェクトをまとめて構築する
+                        // ------------------------------------------------------------
+                        _element_popup.innerHTML = '' +
+                            '<div style="font-weight:bold; background:#866; color:#fff; padding:5px;">' +
+                            '	カスタムダイアログ' +
+                            '</div>' +
+                            '<div id="custom_dialog_message" style="margin:10px; padding:10px;">' +
+                            '</div>' +
+                            '<div id="custom_dialog_body" style="margin:10px; padding:20px; background:#fff; border:1px solid #888;">' +
+                            '</div>' +
+                            '<div style="margin:10px;">' +
+                            '	<input type="button" id="custom_dialog_button" style="width:100%; height:50px;" value="OK">' +
+                            '</div>';
+
+                            // ------------------------------------------------------------
+                            // クリック時に実行されるイベント
+                            // ------------------------------------------------------------
+                            // "custom_dialog_button" という ID 属性のエレメントを取得する
+                            const element_button = document.getElementById("custom_dialog_button");
+                            element_button.onclick = function (){
+
+                                const callback = _this.onclose;
+
+                                // 解放
+                                release();
+
+                                // コールバック関数を実行
+                                if(callback){
+                                    callback();
+                                }
+                            };
+
+                            // ------------------------------------------------------------
+                            // イベントのリッスンを開始する
+                            // ------------------------------------------------------------
+                            // イベントリスナーに対応している
+                            if(window.addEventListener){
+
+                                // リサイズされるたびに実行されるイベント
+                                window.addEventListener("resize" , update);
+                                // スクロールされるたびに実行されるイベント
+                                window.addEventListener("scroll" , update);
+
+                                // アタッチイベントに対応している
+                                }else if(window.attachEvent){
+
+                                // リサイズされるたびに実行されるイベント
+                                window.attachEvent("onresize" , update);
+                                // スクロールされるたびに実行されるイベント
+                                window.attachEvent("onscroll" , update);
+
+                                }
+
+                            // 更新
+                            update();
+                        })();
+                    }
+            
+                // ------------------------------------------------------------
+                // ID 属性からエレメントを取得する
+                // ------------------------------------------------------------
+                // var input_button = document.getElementById("button_05");
+                // var input_message = document.getElementById("input_05_message");
+                // var input_argument = document.getElementById("input_05_argument");
+                // var input_return = document.getElementById("input_05_return");
+
+                // ------------------------------------------------------------
+                // クリックした時に実行されるイベント
+                // ------------------------------------------------------------
+                // input_button.onclick = function (){
+
+                    // ------------------------------------------------------------
+                    // カスタムダイアログを使用する
+                    // ------------------------------------------------------------
+                    // カスタムダイアログを生成
+                    var custom_dialog = new CustomDialog();
+
+                    // 幅を設定する
+                    custom_dialog.setWidth(500);
+
+                    // メッセージを設定
+                    // custom_dialog.setMessage(input_message.value);
+
+                    // エレメントを取得
+                    var element_body = custom_dialog.getElement();
+
+
+                    // ------------------------------------------------------------
+                    // HTML 文字列を指定して、DOM オブジェクトをまとめて構築する
+                    // ------------------------------------------------------------
+                    element_body.innerHTML = '' +
+                        '<table style="width:100%">' +
+                        '	<tr><td style="width:100px; text-align:right;">引数：</td><td><input id="custom_dialog_input_argument" value="" style="width:100%" disabled></td></tr>' +
+                        '	<tr><td style="width:100px; text-align:right;">戻り値：</td><td><input id="custom_dialog_input_return" value="" style="width:100%"></td></tr>' +
+                        '</table>';
+
+                    // ID 属性が "custom_dialog_input_argument" であるエレメントを取得
+                    var custom_dialog_input_argument = document.getElementById("custom_dialog_input_argument");
+
+                    // ID 属性が "custom_dialog_input_return" であるエレメントを取得
+                    var custom_dialog_input_return = document.getElementById("custom_dialog_input_return");
+
+                    // カスタムダイアログのコントロールに値をセット
+                    // custom_dialog_input_argument.value = input_argument.value;
+                    custom_dialog_input_return.value = "返信テスト";
+
+
+                    // ------------------------------------------------------------
+                    // 終了時に実行されるイベント
+                    // ------------------------------------------------------------
+                    custom_dialog.onclose = function (){
+
+                        // カスタムダイアログのコントロールから値を取得
+                        input_return.value = custom_dialog_input_return.value;
+
+                    };
+                };
+
+            // })();
+
+
+
+
             function deleteBook(book_title){
                 const result = window.confirm("Once you delete a list, there is no going back. \nPlease be certain.");
 
@@ -91,7 +450,6 @@
                         url: "/edit_test",
                         data: {val: book_title, isAdd: 'false', isDelete: 'true'},
                         type: "POST",
-                        // dataType: "json",
                         dataType: "html",
                         success: function(data) {
                             // console.log("button is clicked " + data);
