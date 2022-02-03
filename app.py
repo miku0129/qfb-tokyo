@@ -326,6 +326,17 @@ def edit_delete():
             docs = books.stream()
             return render_template('edit_delete.html', uid=uid, books=docs)
 
+@app.route('/edit_test', methods=['GET', 'POST'])
+def edit():
+    if request.method == 'POST':
+            return render_template('edit_test.html')
+
+    else:
+        uid= auth.get_user_by_email(session['usr']).uid
+        books = db.collection('books')
+        docs = books.stream()
+        return render_template('edit_test.html', uid=uid, books=docs)
+
 
 @app.route('/usage')
 def usage():
