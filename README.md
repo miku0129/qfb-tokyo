@@ -11,7 +11,7 @@ From 2021/10/17 to 2021/11/7, Four weeks
 
 #### Video Demo: https://youtu.be/LKHt2ZldNg0
 
-[![alt設定](http://img.youtube.com/vi/LKHt2ZldNg0/0.jpg)](https://www.youtube.com/watch?v=LKHt2ZldNg0)
+[![alt設定](https://i.ibb.co/NNBtrtR/books-quote1.jpg)](https://www.youtube.com/watch?v=LKHt2ZldNg0)
 
 #### Tech
 ---
