@@ -3,11 +3,11 @@
 #### About 
 ---
 
-I created a full-stack app to manage the book lists for the book club I belong to.
-This is the final project deliverable for CS50x.<br>
-所属するブッククラブで本のリストを管理するためにフルスタックのアプリを作成しました。CS50x の最終課題です。
+As a final project deliverable for CS50x, I created a full-stack app to manage the book lists for the book club I belong to.
+CS50x の最終課題として、所属するブッククラブで本のリストを管理するためにフルスタックのアプリを作成しました。
 
-From 2021/10/17 to 2021/11/7, Four weeks
+I did this project from 2021/10/17 to 2021/11/7. 
+作成期間は 2021/ 10/17 から 2021/11/7 です。
 
 #### Video Demo: https://youtu.be/LKHt2ZldNg0
 
