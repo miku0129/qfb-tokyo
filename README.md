@@ -117,3 +117,7 @@ To solve those issues, I read error logs and researched with that words. Through
 - Users can leave comments for each book
 - Users can create own icon with uploading picture
 - Uploading book image
+
+#### Reference
+
+- [Pipenv: Python Dev Workflow for Humans](https://pipenv-fork.readthedocs.io/en/latest/index.html#pipenv-python-dev-workflow-for-humans)
