@@ -41,9 +41,9 @@ urllib3 = "==1.26.7"
 Flask-Session = "*"
 Jinja2 = "==3.0.2"
 MarkupSafe = "==2.0.1"
-Werkzeug = "==2.0.2"
-Flask = {extras = ["async"], version = "*"}
+Flask = "==2.0.2"
 CacheControl = "==0.12.6"
+werkzeug = "*"
 
 [dev-packages]
 
