@@ -94,7 +94,7 @@ Flaskサーバーの起動停止
 ctrl + C
 
 Python仮想環境を起動停止
-pipenv exit
+exit
 
 ```
 
