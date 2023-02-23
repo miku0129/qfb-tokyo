@@ -2,8 +2,9 @@ import json, os, env, sys
 import requests
 
 import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore, auth
+# from firebase_admin import credentials
+# from firebase_admin import firestore, auth
+from firebase_admin import credentials, firestore, auth
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 from flask_session import Session
 import configparser
@@ -334,4 +335,5 @@ def logout():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # app.run(debug=True)
+    app.run(port=int(os.environ.get("PORT", 8080)),host='0.0.0.0',debug=True)
