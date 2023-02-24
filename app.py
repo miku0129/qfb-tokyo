@@ -1,4 +1,6 @@
-import json, os, env, sys, configparser
+# import json, os, bk_env, sys, configparser
+import json, os, sys, configparser
+
 import firebase_admin
 from firebase_admin import credentials, firestore, auth
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
@@ -8,19 +10,28 @@ from helpers import sign_in_with_email_and_password, print_pretty, update_status
 
 app = Flask(__name__)
 
-app.secret_key = env.SECRET_KEY
+# app.secret_key = env.SECRET_KEY
+app.secret_key = os.environ.get("SECRET_KEY")
+
 
 
 # ===================== Firebase =====================================
 # Firebase初期化
 
 creds = credentials.Certificate({
-    "type": env.FIREBASE_TYPE,
-    "project_id": env.FIREBASE_PROJECT_ID,
-    "private_key": env.FIREBASE_PRIVATE_KEY.replace("\\n", "\n"),
-    "client_email": env.FIREBASE_CLIENT_EMAIL,
-    "token_uri": env.FIREBASE_TOKEN_URI
+    # "type": env.FIREBASE_TYPE,
+    # "project_id": env.FIREBASE_PROJECT_ID,
+    # "private_key": env.FIREBASE_PRIVATE_KEY.replace("\\n", "\n"),
+    # "client_email": env.FIREBASE_CLIENT_EMAIL,
+    # "token_uri": env.FIREBASE_TOKEN_URI
+    "type": os.environ.get("FIREBASE_TYPE"),
+    "project_id": os.environ.get("FIREBASE_PROJECT_ID"),
+    "private_key": os.environ.get("FIREBASE_PRIVATE_KEY.replace('\\n', '\n')"),
+    "client_email": os.environ.get("FIREBASE_CLIENT_EMAIL"),
+    "token_uri": os.environ.get("FIREBASE_TOKEN_URI")
+
 })
+print("hihihihihihihi: ",os.environ.get("FIREBASE_TOKEN_URI") )
 
 firebase_admin.initialize_app(creds)
 db = firestore.client()
@@ -40,7 +51,9 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-api_key = env.FIREBASE_TOKEN_API_KEY
+# api_key = env.FIREBASE_TOKEN_API_KEY
+api_key = os.environ.get("FIREBASE_TOKEN_API_KEY")
+
 
 config = configparser.ConfigParser()
 config.read("./config.ini")
