@@ -71,4 +71,11 @@ node_modules/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+# .env
+
+bk_key.json
+bk_Procfile
+bk_runtime.txt
+bk_files
+
+

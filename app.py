@@ -1,13 +1,8 @@
-import json, os, env, sys
-import requests
-
+import json, os, env, sys, configparser
 import firebase_admin
-# from firebase_admin import credentials
-# from firebase_admin import firestore, auth
 from firebase_admin import credentials, firestore, auth
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 from flask_session import Session
-import configparser
 from helpers import sign_in_with_email_and_password, print_pretty, update_status_of_books_and_book_shelf, en_key, de_key
 
 
@@ -18,6 +13,7 @@ app.secret_key = env.SECRET_KEY
 
 # ===================== Firebase =====================================
 # Firebase初期化
+
 creds = credentials.Certificate({
     "type": env.FIREBASE_TYPE,
     "project_id": env.FIREBASE_PROJECT_ID,
@@ -335,5 +331,4 @@ def logout():
 
 
 if __name__ == "__main__":
-    # app.run(debug=True)
     app.run(port=int(os.environ.get("PORT", 8080)),host='0.0.0.0',debug=True)
