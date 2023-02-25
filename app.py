@@ -30,10 +30,8 @@ creds = credentials.Certificate({
     "type": "service_account",
     "token_uri": "https://oauth2.googleapis.com/token",
     "client_email": os.environ.get("FIREBASE_CLIENT_EMAIL"),
-    "private_key": os.environ.get("FIREBASE_PRIVATE_KEY"),
+    "private_key": os.environ.get("FIREBASE_PRIVATE_KEY").replace("\\n", "\n"),
     "project_id": "qfb-tokyo"
-
-
 
 })
 
