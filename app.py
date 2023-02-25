@@ -19,19 +19,18 @@ app.secret_key = os.environ.get("SECRET_KEY")
 # Firebase初期化
 
 creds = credentials.Certificate({
+    # ローカルの .env fileから読み込む場合の設定。 .env と .env.pyを有効にすること
     # "type": env.FIREBASE_TYPE,
     # "project_id": env.FIREBASE_PROJECT_ID,
     # "private_key": env.FIREBASE_PRIVATE_KEY.replace("\\n", "\n"),
     # "client_email": env.FIREBASE_CLIENT_EMAIL,
     # "token_uri": env.FIREBASE_TOKEN_URI
 
-    # "type": os.environ.get("FIREBASE_TYPE"),
-    # "type": os.environ.get("TYPE"),
+    # cloud run でデプロイを実施する場合の設定
     "type": "service_account",
     "token_uri": "https://oauth2.googleapis.com/token",
     "client_email": os.environ.get("FIREBASE_CLIENT_EMAIL"),
-    "private_key": os.environ.get("FIREBASE_PRIVATE_KEY.replace('\\n', '\n')"),
-    # "project_id": os.environ.get("FIREBASE_PROJECT_ID"),
+    "private_key": os.environ.get("FIREBASE_PRIVATE_KEY"),
     "project_id": "qfb-tokyo"
 
 
