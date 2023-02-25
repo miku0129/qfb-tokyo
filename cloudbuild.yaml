@@ -11,4 +11,3 @@ steps:
 substitutions:
     _FIREBASE_CLIENT_EMAIL: test1@gmail.com
     _FIREBASE_PRIVATE_KEY: testkey
-    # _FIREBASE_PROJECT_ID: testid
