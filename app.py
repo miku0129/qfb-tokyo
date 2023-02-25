@@ -1,4 +1,4 @@
-# import json, os, bk_env, sys, configparser
+# import json, os, env, sys, configparser
 import json, os, sys, configparser
 
 import firebase_admin
@@ -155,6 +155,7 @@ def index():
     if usr == None:
         return redirect(url_for('qfb_tokyo'), code=200)
 
+    print("usr?: ",usr)
     user = auth.get_user_by_email(usr)
 
     # update 'books' and 'book_shelf' with vote/unvote
