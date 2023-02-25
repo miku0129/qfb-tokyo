@@ -32,7 +32,14 @@ creds = credentials.Certificate({
     "token_uri": os.environ.get("FIREBASE_TOKEN_URI"),
     "client_email": os.environ.get("FIREBASE_CLIENT_EMAIL"),
     "private_key": os.environ.get("FIREBASE_PRIVATE_KEY").replace("\\n", "\n"),
-    "project_id": os.environ.get("FIREBASE_PROJECT_ID")
+    "project_id": os.environ.get("FIREBASE_PROJECT_ID"),
+
+    "api_key" : os.environ.get("FIREBASE_TOKEN_API_KEY"),
+    "authDomain": "qfb-tokyo.firebaseapp.com",
+    "storageBucket": "qfb-tokyo.appspot.com",
+    "messagingSenderId": "350595191131",
+    "appId": "1:350595191131:web:861d77a2544dda8d698a7e"
+
 })
 
 firebase_admin.initialize_app(creds)
