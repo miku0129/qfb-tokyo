@@ -1,10 +1,6 @@
 env*.pyc
-.env
-bk_firebaseConfig
-bk_qfb-tokyo-firebase-adminsdk-3sbnu-efcb66a282
 .venv
 flask_session
-back_up_files
 
 # Logs
 logs
@@ -71,11 +67,8 @@ node_modules/
 .yarn-integrity
 
 # dotenv environment variables file
-# .env
+.env
 
-bk_key.json
-bk_Procfile
-bk_runtime.txt
 bk_files
 bk_env.py
 

@@ -6,9 +6,12 @@ steps:
   # Deploy container image to Cloud Run
 - name: "gcr.io/cloud-builders/gcloud"
   args: ['beta', 'run', 'deploy', 'booklist', '--image', 'gcr.io/$PROJECT_ID/booklist:latest', '--region', 'us-central1', '--allow-unauthenticated', '--platform', 'managed',
-  '--set-env-vars', 'FIREBASE_CLIENT_EMAIL=${_FIREBASE_CLIENT_EMAIL},FIREBASE_PRIVATE_KEY=${_FIREBASE_PRIVATE_KEY}']
+  '--set-env-vars', 'FIREBASE_CLIENT_EMAIL=${_FIREBASE_CLIENT_EMAIL},FIREBASE_PRIVATE_KEY=${_FIREBASE_PRIVATE_KEY},_FIREBASE_TOKEN_URI=${_FIREBASE_TOKEN_URI},FIREBASE_PROJECT_ID=${_FIREBASE_PROJECT_ID},SECRET_KEY=${_SECRET_KEY},FIREBASE_TOKEN_API_KEY+${_FIREBASE_TOKEN_API_KEY}']
 
-substitutions:
-    _FIREBASE_CLIENT_EMAIL: test1@gmail.com
-    _FIREBASE_PRIVATE_KEY: testkey
-
+substitutions: #環境変数の初期値を設定
+    _FIREBASE_CLIENT_EMAIL: init@gmail.com
+    _FIREBASE_PRIVATE_KEY: initvalue
+    _FIREBASE_TOKEN_URI: initvalue
+    _FIREBASE_PROJECT_ID: initvalue
+    _SECRET_KEY: initvalue
+    _FIREBASE_TOKEN_API_KEY: initvalue

@@ -10,6 +10,7 @@ from helpers import sign_in_with_email_and_password, print_pretty, update_status
 
 app = Flask(__name__)
 
+# ローカルの .env fileから読み込む場合の設定。 .env と .env.pyを有効にすること
 # app.secret_key = env.SECRET_KEY
 app.secret_key = os.environ.get("SECRET_KEY")
 
@@ -26,13 +27,12 @@ creds = credentials.Certificate({
     # "client_email": env.FIREBASE_CLIENT_EMAIL,
     # "token_uri": env.FIREBASE_TOKEN_URI
 
-    # cloud run でデプロイを実施する場合の設定
+    # Cloud run, Cloud build でデプロイを実施する場合の設定
     "type": "service_account",
-    "token_uri": "https://oauth2.googleapis.com/token",
+    "token_uri": os.environ.get("FIREBASE_TOKEN_URI"),
     "client_email": os.environ.get("FIREBASE_CLIENT_EMAIL"),
     "private_key": os.environ.get("FIREBASE_PRIVATE_KEY").replace("\\n", "\n"),
-    "project_id": "qfb-tokyo"
-
+    "project_id": os.environ.get("FIREBASE_PROJECT_ID")
 })
 
 firebase_admin.initialize_app(creds)
@@ -53,6 +53,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+# ローカルの .env fileから読み込む場合の設定。 .env と .env.pyを有効にすること
 # api_key = env.FIREBASE_TOKEN_API_KEY
 api_key = os.environ.get("FIREBASE_TOKEN_API_KEY")
 
