@@ -5,4 +5,13 @@ steps:
   args: ["--cache=true", "--cache-ttl=48h", "--destination=gcr.io/$PROJECT_ID/booklist:latest"]
   # Deploy container image to Cloud Run
 - name: "gcr.io/cloud-builders/gcloud"
-  args: ['beta', 'run', 'deploy', 'booklist', '--image', 'gcr.io/$PROJECT_ID/booklist:latest', '--region', 'us-central1', '--allow-unauthenticated', '--platform', 'managed']
+  args: ['beta', 'run', 'deploy', 'booklist', '--image', 'gcr.io/$PROJECT_ID/booklist:latest', '--region', 'us-central1', '--allow-unauthenticated', '--platform', 'managed',
+  '--set-env-vars', 'FIREBASE_CLIENT_EMAIL=${_FIREBASE_CLIENT_EMAIL}', 
+  '--set-env-vars', 'FIREBASE_PRIVATE_KEY=${_FIREBASE_PRIVATE_KEY}',
+  '--set-env-vars', 'FIREBASE_PROJECT_ID=qfb-tokyo']
+  # '--set-env-vars', 'FIREBASE_PROJECT_ID=${_FIREBASE_PROJECT_ID}']
+
+substitutions:
+    _FIREBASE_CLIENT_EMAIL: test1@gmail.com
+    _FIREBASE_PRIVATE_KEY: testkey
+    # _FIREBASE_PROJECT_ID: testid

@@ -24,14 +24,19 @@ creds = credentials.Certificate({
     # "private_key": env.FIREBASE_PRIVATE_KEY.replace("\\n", "\n"),
     # "client_email": env.FIREBASE_CLIENT_EMAIL,
     # "token_uri": env.FIREBASE_TOKEN_URI
-    "type": os.environ.get("FIREBASE_TYPE"),
-    "project_id": os.environ.get("FIREBASE_PROJECT_ID"),
-    "private_key": os.environ.get("FIREBASE_PRIVATE_KEY.replace('\\n', '\n')"),
+
+    # "type": os.environ.get("FIREBASE_TYPE"),
+    # "type": os.environ.get("TYPE"),
+    "type": "service_account",
+    "token_uri": "https://oauth2.googleapis.com/token",
     "client_email": os.environ.get("FIREBASE_CLIENT_EMAIL"),
-    "token_uri": os.environ.get("FIREBASE_TOKEN_URI")
+    "private_key": os.environ.get("FIREBASE_PRIVATE_KEY.replace('\\n', '\n')"),
+    # "project_id": os.environ.get("FIREBASE_PROJECT_ID"),
+    "project_id": "qfb-tokyo"
+
+
 
 })
-print("hihihihihihihi: ",os.environ.get("FIREBASE_TOKEN_URI") )
 
 firebase_admin.initialize_app(creds)
 db = firestore.client()
